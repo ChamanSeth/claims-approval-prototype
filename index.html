@@ -14,15 +14,15 @@ xmlns="http://www.w3.org/TR/REC-html40">
   <o:Author>Chaman Seth</o:Author>
   <o:LastAuthor>Chaman Seth</o:LastAuthor>
   <o:Revision>2</o:Revision>
-  <o:TotalTime>3</o:TotalTime>
-  <o:Created>2025-11-12T16:09:00Z</o:Created>
-  <o:LastSaved>2025-11-12T16:09:00Z</o:LastSaved>
+  <o:TotalTime>4</o:TotalTime>
+  <o:Created>2025-11-12T16:29:00Z</o:Created>
+  <o:LastSaved>2025-11-12T16:29:00Z</o:LastSaved>
   <o:Pages>1</o:Pages>
-  <o:Words>2435</o:Words>
-  <o:Characters>13880</o:Characters>
-  <o:Lines>115</o:Lines>
-  <o:Paragraphs>32</o:Paragraphs>
-  <o:CharactersWithSpaces>16283</o:CharactersWithSpaces>
+  <o:Words>4025</o:Words>
+  <o:Characters>22949</o:Characters>
+  <o:Lines>191</o:Lines>
+  <o:Paragraphs>53</o:Paragraphs>
+  <o:CharactersWithSpaces>26921</o:CharactersWithSpaces>
   <o:Version>16.00</o:Version>
  </o:DocumentProperties>
  <o:OfficeDocumentSettings>
@@ -33,6 +33,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <link rel=colorSchemeMapping href="index.fld/colorschememapping.xml">
 <!--[if gte mso 9]><xml>
  <w:WordDocument>
+  <w:Zoom>160</w:Zoom>
   <w:TrackMoves>false</w:TrackMoves>
   <w:TrackFormatting/>
   <w:PunctuationKerning/>
@@ -1537,394 +1538,473 @@ name=&quot;viewport&quot; content=&quot;width=device-width,
 initial-scale=1.0&quot; /&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;title&gt;Claims
-Approval Prototype — Static Export&lt;/title&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;!-- Tailwind CDN
-to preserve styling --&gt;<o:p></o:p></p>
+Approval Prototype — Standalone&lt;/title&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;script
 src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;style&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;script
+crossorigin
+src=&quot;https://unpkg.com/react@18/umd/react.development.js&quot;&gt;&lt;/script&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>   
-</span>body{background:#f8fafc}<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;script
+crossorigin
+src=&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;&gt;&lt;/script&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>   
-</span>.container{max-width:1200px;margin:0 auto;padding:24px}<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;script
+src=&quot;https://unpkg.com/@babel/standalone/babel.min.js&quot;&gt;&lt;/script&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>   
-</span>.section-title{font-size:12px;color:#475569;text-transform:uppercase;letter-spacing:.08em;margin:24px
-0 8px}<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;script&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>   
-</span>.divider{height:1px;background:#e2e8f0;margin:16px 0 32px}<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>// Utility to
+download the *current* HTML as a file<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>   
-</span>.notice{font-size:12px;color:#64748b;margin-top:6px}<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>function
+downloadCurrentHTML() {<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;/style&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>// Serialize
+full document including doctype<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const doctype =
+new XMLSerializer().serializeToString(document.doctype);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const html =
+document.documentElement.outerHTML;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const full =
+`${doctype}\n${html}`;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const blob = new
+Blob([full], { type: &quot;text/html;charset=utf-8&quot; });<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const url =
+URL.createObjectURL(blob);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const a =
+document.createElement(&quot;a&quot;);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const safeTitle
+= (document.title || &quot;page&quot;)<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>       
+</span>.replace(/[^a-z0-9\-_\s]+/gi, &quot;&quot;)<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>       
+</span>.replace(/\s+/g, &quot;-&quot;)<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>       
+</span>.toLowerCase();<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const stamp =
+new Date().toISOString().slice(0,19).replace(/[:T]/g,&quot;-&quot;);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>a.href = url;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>a.download =
+`${safeTitle}-${stamp}.html`;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>     
+</span>document.body.appendChild(a);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>a.click();<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>a.remove();<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>     
+</span>URL.revokeObjectURL(url);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;/script&gt;<o:p></o:p></p>
 
 <p class=MsoNormal>&lt;/head&gt;<o:p></o:p></p>
 
-<p class=MsoNormal>&lt;body&gt;<o:p></o:p></p>
+<p class=MsoNormal>&lt;body class=&quot;bg-slate-50&quot;&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;div
-class=&quot;container&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;h1
-class=&quot;text-2xl font-bold text-slate-800&quot;&gt;Claims Approval
-Prototype — Static Export&lt;/h1&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;p
-class=&quot;notice&quot;&gt;Static HTML rendering of the TSX component. All
-React state &amp; handlers removed. Icons replaced/omitted. This shows two
-screens: Login and App view.&lt;/p&gt;<o:p></o:p></p>
+id=&quot;root&quot;&gt;&lt;/div&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><o:p>&nbsp;</o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;div
-class=&quot;divider&quot;&gt;&lt;/div&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;script
+type=&quot;text/babel&quot;&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;div
-class=&quot;section-title&quot;&gt;Screen A — Login&lt;/div&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>const { useState }
+= React;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;!-- =====
-LOGIN SCREEN (static) ===== --&gt;<o:p></o:p></p>
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;div
-class=&quot;min-h-[60vh] bg-gradient-to-br from-slate-50 via-blue-50
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>// Minimal icon
+stubs (so no bundler needed)<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>const Icon = ({
+className }) =&gt; (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;svg
+viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot;
+stroke=&quot;currentColor&quot; className={className || &quot;w-4
+h-4&quot;}&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;circle
+cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;9&quot;
+strokeWidth=&quot;2&quot;&gt;&lt;/circle&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;/svg&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>const ChevronRight
+= Icon, Search = Icon, Filter = Icon, Check = Icon, X = Icon,<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>         
+</span>MessageSquare = Icon, FileText = Icon, Clock = Icon, CheckCircle = Icon,<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>XCircle =
+Icon, AlertCircle = Icon, Home = Icon, Database = Icon,<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>Users =
+Icon, Bell = Icon, LogOut = Icon, ChevronDown = Icon,<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>Upload =
+Icon, Eye = Icon;<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>function
+ClaimsApprovalPrototype() {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+[currentPage, setCurrentPage] = useState('login');<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const [userRole,
+setUserRole] = useState('');<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+[selectedClaim, setSelectedClaim] = useState(null);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+[searchTerm, setSearchTerm] = useState('');<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+[filterStatus, setFilterStatus] = useState('all');<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+[showCommentModal, setShowCommentModal] = useState(false);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const [comment,
+setComment] = useState('');<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const [claims,
+setClaims] = useState([<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>{ id:
+'CLM-001', title: 'Synchrony Image Guidance Technology', description:
+'Synchrony is the only technology that uses image guidance to automatically
+adapt and synchronize the radiation beam to the position of the tumor in
+real-time.', submittedBy: 'Sarah Johnson', submissionDate: '2025-10-15', type:
+'Competitive', theme: 'Product', offering: 'Synchrony', status: 'pending',
+reviewers: ['Product', 'Clinical', 'Regulatory', 'Legal'], currentReviewer:
+'Product', approvals: [], rejections: [], comments: [] },<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>{ id:
+'CLM-002', title: 'ClearRT Precision Treatment', description: 'Deliver more
+personalized and more precise treatment plans for more patients.', submittedBy:
+'Michael Chen', submissionDate: '2025-10-18', type: 'Clinical', theme:
+'Software', offering: 'Precision', status: 'pending', reviewers: ['Product',
+'Clinical', 'Engineering'], currentReviewer: 'Clinical', approvals:
+['Product'], rejections: [], comments: [] },<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>{ id:
+'CLM-003', title: 'ClearRT MR Imaging Integration', description: 'ClearRT
+avoids the distortion caused by MR imaging and the artifacts associated with
+conventional cone beam CT by using hardware-based image reconstruction.',
+submittedBy: 'Emily Rodriguez', submissionDate: '2025-10-20', type:
+'Competitive', theme: 'Software', offering: 'ClearRT', status: 'approved',
+reviewers: ['Product', 'Clinical', 'Regulatory', 'Engineering'],
+currentReviewer: null, approvals: ['Product', 'Clinical', 'Regulatory',
+'Engineering'], rejections: [], comments: [] },<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>{ id:
+'CLM-004', title: 'ClearRT Treatment Time Efficiency', description: 'It takes
+an image reconstruction in minutes and the industry-leading image quality means
+clinicians can more confidently proceed with treatment.', submittedBy: 'David
+Park', submissionDate: '2025-10-22', type: 'Technological', theme: 'Software',
+offering: 'ClearRT', status: 'rejected', reviewers: ['Product', 'Clinical',
+'Regulatory'], currentReviewer: null, approvals: ['Product'], rejections:
+['Clinical'], comments: [{ reviewer: 'Clinical', text: 'Need specific time
+metrics and clinical validation data', date: '2025-10-25' }] },<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>{ id:
+'CLM-005', title: 'ClearRT Anatomical Accuracy', description: 'The industry
+leading image quality and anatomical accuracy produced by ClearRT allows
+clinicians to quickly and confidently proceed with treatment.', submittedBy:
+'Lisa Wang', submissionDate: '2025-10-24', type: 'Competitive', theme:
+'Software', offering: 'ClearRT', status: 'under_review', reviewers: ['Product',
+'Clinical', 'Regulatory', 'Engineering'], currentReviewer: 'Regulatory', approvals:
+['Product', 'Clinical'], rejections: [], comments: [] }<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>]);<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const roles =
+['Product', 'Clinical', 'Regulatory', 'Engineering', 'Legal'];<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+handleLogin = (role) =&gt; { setUserRole(role); setCurrentPage('dashboard'); };<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+handleApprove = (claimId) =&gt; {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>       
+</span>setClaims(claims.map(claim =&gt; {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>if (claim.id
+=== claimId) {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>const
+newApprovals = [...claim.approvals, userRole];<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>const
+remainingReviewers = claim.reviewers.filter(r =&gt; !newApprovals.includes(r));<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>return {
+...claim, approvals: newApprovals, currentReviewer: remainingReviewers.length
+&gt; 0 ? remainingReviewers[0] : null, status: remainingReviewers.length === 0
+? 'approved' : 'under_review' };<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>return
+claim;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>}));<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>       
+</span>setSelectedClaim(null);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>};<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+handleReject = (claimId) =&gt; { const found = claims.find(c =&gt; c.id ===
+claimId); setSelectedClaim(found || null); setShowCommentModal(true); };<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+submitRejection = () =&gt; {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>if
+(selectedClaim) {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>         
+</span>setClaims(claims.map(claim =&gt; {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>if
+(claim.id === selectedClaim.id) {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>return {
+...claim, rejections: [...claim.rejections, userRole], status: 'rejected',
+comments: [...claim.comments, { reviewer: userRole, text: comment, date: new
+Date().toISOString().split('T')[0] }] };<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>return
+claim;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>}));<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>       
+</span>setShowCommentModal(false); setComment(''); setSelectedClaim(null);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>};<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+getStatusColor = (status) =&gt; (status === 'approved' ? 'bg-emerald-100
+text-emerald-700 border border-emerald-200' :<o:p></o:p></p>
+
+<p class=MsoNormal><span
+style='mso-spacerun:yes'>                                         
+</span>status === 'rejected' ? 'bg-rose-100 text-rose-700 border
+border-rose-200' :<o:p></o:p></p>
+
+<p class=MsoNormal><span
+style='mso-spacerun:yes'>                                         
+</span>status === 'under_review' ? 'bg-blue-100 text-blue-700 border
+border-blue-200' :<o:p></o:p></p>
+
+<p class=MsoNormal><span
+style='mso-spacerun:yes'>                                         
+</span>'bg-amber-100 text-amber-700 border border-amber-200');<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+getStatusIcon = (status) =&gt; (status === 'approved' ? &lt;CheckCircle
+className=&quot;w-4 h-4&quot; /&gt; :<o:p></o:p></p>
+
+<p class=MsoNormal><span
+style='mso-spacerun:yes'>                                         </span>status
+=== 'rejected' ? &lt;XCircle className=&quot;w-4 h-4&quot; /&gt; :<o:p></o:p></p>
+
+<p class=MsoNormal><span
+style='mso-spacerun:yes'>                                         </span>status
+=== 'under_review' ? &lt;Clock className=&quot;w-4 h-4&quot; /&gt; :<o:p></o:p></p>
+
+<p class=MsoNormal><span
+style='mso-spacerun:yes'>                                        
+</span>&lt;AlertCircle className=&quot;w-4 h-4&quot; /&gt;);<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>const
+filteredClaims = claims.filter(claim =&gt; {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>const
+matchesSearch = claim.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+claim.description.toLowerCase().includes(searchTerm.toLowerCase());<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>const
+matchesFilter = filterStatus === 'all' || claim.status === filterStatus;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>const
+isPendingForUser = currentPage === 'dashboard' ? (claim.currentReviewer ===
+userRole &amp;&amp; claim.status !== 'approved' &amp;&amp; claim.status !==
+'rejected') : true;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>return
+matchesSearch &amp;&amp; matchesFilter &amp;&amp; (currentPage === 'repository'
+|| isPendingForUser);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>});<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>if (currentPage
+=== 'login') {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>return (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
+className=&quot;min-h-screen bg-gradient-to-br from-slate-50 via-blue-50
 to-slate-100 flex items-center justify-center p-4&quot;&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;div
-class=&quot;bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full border
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
+className=&quot;bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full border
 border-slate-200&quot;&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;div
-class=&quot;text-center mb-8&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
-class=&quot;bg-gradient-to-br from-blue-600 to-blue-800 w-20 h-20 rounded-2xl
-flex items-center justify-center mx-auto mb-6 shadow-lg&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;!--
-icon removed --&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-white text-xl font-bold&quot;&gt;AC&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;h1
-class=&quot;text-3xl font-bold bg-gradient-to-r from-blue-700 to-blue-900
-bg-clip-text text-transparent mb-3&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>Accuray
-Claims Portal<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/h1&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;p
-class=&quot;text-slate-600 text-lg&quot;&gt;Product Claims Matrix
-Approval&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
-class=&quot;mt-4 pt-4 border-t border-slate-200&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;p
-class=&quot;text-sm text-slate-500&quot;&gt;Select your department to
-continue&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;div
-class=&quot;space-y-3&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;!-- Role
-buttons (static) --&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;button
-class=&quot;w-full bg-white border-2 border-slate-200 hover:border-blue-500
-hover:bg-blue-50 rounded-xl p-4 flex items-center justify-between
-transition-all group shadow-sm hover:shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-700 font-semibold
-group-hover:text-blue-700&quot;&gt;Product Team&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-400 group-hover:text-blue-600&quot;&gt;›&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>         
-</span>&lt;/button&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;button
-class=&quot;w-full bg-white border-2 border-slate-200 hover:border-blue-500
-hover:bg-blue-50 rounded-xl p-4 flex items-center justify-between
-transition-all group shadow-sm hover:shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-700 font-semibold
-group-hover:text-blue-700&quot;&gt;Clinical Team&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-400 group-hover:text-blue-600&quot;&gt;›&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>         
-</span>&lt;/button&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;button
-class=&quot;w-full bg-white border-2 border-slate-200 hover:border-blue-500
-hover:bg-blue-50 rounded-xl p-4 flex items-center justify-between
-transition-all group shadow-sm hover:shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-700 font-semibold
-group-hover:text-blue-700&quot;&gt;Regulatory Team&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-400 group-hover:text-blue-600&quot;&gt;›&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>         
-</span>&lt;/button&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;button
-class=&quot;w-full bg-white border-2 border-slate-200 hover:border-blue-500
-hover:bg-blue-50 rounded-xl p-4 flex items-center justify-between
-transition-all group shadow-sm hover:shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-700 font-semibold
-group-hover:text-blue-700&quot;&gt;Engineering Team&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-400 group-hover:text-blue-600&quot;&gt;›&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>         
-</span>&lt;/button&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;button
-class=&quot;w-full bg-white border-2 border-slate-200 hover:border-blue-500
-hover:bg-blue-50 rounded-xl p-4 flex items-center justify-between
-transition-all group shadow-sm hover:shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-700 font-semibold
-group-hover:text-blue-700&quot;&gt;Legal Team&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;text-slate-400 group-hover:text-blue-600&quot;&gt;›&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>         
-</span>&lt;/button&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;div
-class=&quot;mt-8 pt-6 border-t border-slate-200 text-center&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;p
-class=&quot;text-xs text-slate-500&quot;&gt;© 2025 Accuray Incorporated -
-Confidential&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;div
-class=&quot;divider&quot;&gt;&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;div
-class=&quot;section-title&quot;&gt;Screen B — App View
-(Dashboard/Repository)&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;!-- ===== APP
-VIEW (static) ===== --&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;div
-class=&quot;min-h-[70vh] bg-slate-50 flex rounded-xl overflow-hidden border
-border-slate-200 shadow-sm&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;!-- Sidebar
---&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;div
-class=&quot;w-72 bg-gradient-to-b from-slate-800 to-slate-900 text-white flex
-flex-col&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;div
-class=&quot;p-6 border-b border-slate-700&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
-class=&quot;flex items-center space-x-3 mb-4&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
-class=&quot;bg-gradient-to-br from-blue-500 to-blue-700 p-3 rounded-xl
-shadow-lg&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;span
-class=&quot;text-white font-bold&quot;&gt;AC&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>           
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>           
-</span>&lt;div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;h2
-class=&quot;font-bold text-xl&quot;&gt;Accuray&lt;/h2&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;p
-class=&quot;text-slate-400 text-sm&quot;&gt;Claims Portal&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>           
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
-class=&quot;bg-slate-700/50 rounded-lg p-3 mt-4&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;p
-class=&quot;text-xs text-slate-400 mb-1&quot;&gt;Logged in as&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;p
-class=&quot;text-white font-semibold&quot;&gt;[Role] Team&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;nav
-class=&quot;flex-1 p-4 space-y-2&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;button
-class=&quot;w-full flex items-center space-x-3 p-3 rounded-xl transition-all
-bg-blue-600 shadow-lg shadow-blue-900/50&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;w-5 h-5 rounded bg-white/20&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;font-medium&quot;&gt;Pending Approvals&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;ml-auto bg-rose-500 text-white text-xs rounded-full px-2.5 py-1
-font-semibold shadow-lg&quot;&gt;3&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>         
-</span>&lt;/button&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;button
-class=&quot;w-full flex items-center space-x-3 p-3 rounded-xl transition-all
-hover:bg-slate-700&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;w-5 h-5 rounded bg-white/20&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;font-medium&quot;&gt;Claims Repository&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>         
-</span>&lt;/button&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;/nav&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;div
-class=&quot;p-4 border-t border-slate-700&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;button
-class=&quot;w-full flex items-center space-x-3 p-3 rounded-xl
-hover:bg-slate-700 transition-all&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;w-5 h-5 rounded bg-white/20&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;span
-class=&quot;font-medium&quot;&gt;Logout&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>         
-</span>&lt;/button&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
-class=&quot;mt-4 text-center&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;p
-class=&quot;text-xs text-slate-500&quot;&gt;Accuray Confidential&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;!-- Main
---&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;div
-class=&quot;flex-1 flex flex-col&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;!-- Header
---&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;header
-class=&quot;bg-white border-b border-slate-200 shadow-sm&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
-class=&quot;p-6&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
-class=&quot;flex items-center justify-between&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                </span>&lt;h1
-class=&quot;text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600
-bg-clip-text text-transparent&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>Pending Approvals<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
+className=&quot;text-center mb-8&quot;&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/h1&gt;<o:p></o:p></p>
+</span>&lt;div className=&quot;bg-gradient-to-br from-blue-600 to-blue-800 w-20
+h-20 rounded-2xl flex items-center justify-center mx-auto mb-6
+shadow-lg&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;FileText className=&quot;w-10 h-10 text-white&quot; /&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                </span>&lt;h1
+className=&quot;text-3xl font-bold bg-gradient-to-r from-blue-700 to-blue-900
+bg-clip-text text-transparent mb-3&quot;&gt;Accuray Claims Portal&lt;/h1&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>                </span>&lt;p
-class=&quot;text-slate-600 mt-2 text-lg&quot;&gt;Claims awaiting your review as
-[Role] team member&lt;/p&gt;<o:p></o:p></p>
+className=&quot;text-slate-600 text-lg&quot;&gt;Product Claims Matrix
+Approval&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;div className=&quot;mt-4 pt-4 border-t
+border-slate-200&quot;&gt;&lt;p className=&quot;text-sm
+text-slate-500&quot;&gt;Select your department to
+continue&lt;/p&gt;&lt;/div&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>             
 </span>&lt;/div&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
-class=&quot;flex items-center space-x-4&quot;&gt;<o:p></o:p></p>
+className=&quot;space-y-3&quot;&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;button class=&quot;relative p-3 hover:bg-slate-100 rounded-xl
-transition-colors&quot;&gt;<o:p></o:p></p>
+</span>{roles.map(role =&gt; (<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;block w-6 h-6 rounded
-bg-slate-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
+</span>&lt;button key={role} onClick={() =&gt; handleLogin(role)}
+className=&quot;w-full bg-white border-2 border-slate-200 hover:border-blue-500
+hover:bg-blue-50 rounded-xl p-4 flex items-center justify-between
+transition-all group shadow-sm hover:shadow-md&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;span className=&quot;text-slate-700 font-semibold
+group-hover:text-blue-700&quot;&gt;{role} Team&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;ChevronRight className=&quot;w-5 h-5 text-slate-400
+group-hover:text-blue-600 transition-colors&quot; /&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500
-rounded-full border-2 border-white&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
 </span>&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                </span>))}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
+className=&quot;mt-8 pt-6 border-t border-slate-200 text-center&quot;&gt;&lt;p
+className=&quot;text-xs text-slate-500&quot;&gt;© 2025 Accuray Incorporated -
+Confidential&lt;/p&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>           
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>}<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>return (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;div
+className=&quot;min-h-screen bg-slate-50 flex&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
+className=&quot;w-72 bg-gradient-to-b from-slate-800 to-slate-900 text-white
+flex flex-col shadow-2xl&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
+className=&quot;p-6 border-b border-slate-700&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
+className=&quot;flex items-center space-x-3 mb-4&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;div className=&quot;bg-gradient-to-br from-blue-500 to-blue-700 p-3
+rounded-xl shadow-lg&quot;&gt;&lt;FileText className=&quot;w-7 h-7&quot;
+/&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;div&gt;&lt;h2 className=&quot;font-bold
+text-xl&quot;&gt;Accuray&lt;/h2&gt;&lt;p className=&quot;text-slate-400
+text-sm&quot;&gt;Claims Portal&lt;/p&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
+className=&quot;bg-slate-700/50 rounded-lg p-3 mt-4&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                </span>&lt;p
+className=&quot;text-xs text-slate-400 mb-1&quot;&gt;Logged in as&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                </span>&lt;p
+className=&quot;text-white font-semibold&quot;&gt;{userRole} Team&lt;/p&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>             
 </span>&lt;/div&gt;<o:p></o:p></p>
@@ -1932,481 +2012,699 @@ rounded-full border-2 border-white&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
 <p class=MsoNormal><span style='mso-spacerun:yes'>           
 </span>&lt;/div&gt;<o:p></o:p></p>
 
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;nav
+className=&quot;flex-1 p-4 space-y-2&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;button onClick={() =&gt; setCurrentPage('dashboard')}
+className={&quot;w-full flex items-center space-x-3 p-3 rounded-xl
+transition-all &quot; + (currentPage === 'dashboard' ? 'bg-blue-600 shadow-lg
+shadow-blue-900/50' : 'hover:bg-slate-700')}&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;Home className=&quot;w-5 h-5&quot; /&gt;&lt;span
+className=&quot;font-medium&quot;&gt;Pending Approvals&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>{filteredClaims.length &gt; 0 &amp;&amp; currentPage === 'dashboard'
+&amp;&amp; (&lt;span className=&quot;ml-auto bg-rose-500 text-white text-xs
+rounded-full px-2.5 py-1 font-semibold shadow-lg&quot;&gt;{filteredClaims.length}&lt;/span&gt;)}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;button onClick={() =&gt; setCurrentPage('repository')}
+className={&quot;w-full flex items-center space-x-3 p-3 rounded-xl
+transition-all &quot; + (currentPage === 'repository' ? 'bg-blue-600 shadow-lg
+shadow-blue-900/50' : 'hover:bg-slate-700')}&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;Database className=&quot;w-5 h-5&quot; /&gt;&lt;span
+className=&quot;font-medium&quot;&gt;Claims Repository&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>           
+</span>&lt;/nav&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
+className=&quot;p-4 border-t border-slate-700&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;button onClick={() =&gt; setCurrentPage('login')}
+className=&quot;w-full flex items-center space-x-3 p-3 rounded-xl
+hover:bg-slate-700 transition-all&quot;&gt;&lt;LogOut className=&quot;w-5 h-5&quot;
+/&gt;&lt;span
+className=&quot;font-medium&quot;&gt;Logout&lt;/span&gt;&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
+className=&quot;mt-4 text-center&quot;&gt;&lt;p className=&quot;text-xs
+text-slate-500&quot;&gt;Accuray Confidential&lt;/p&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>           
+</span>&lt;/div&gt;<o:p></o:p></p>
+
 <p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/div&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>       
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
+className=&quot;flex-1 flex flex-col&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;header
+className=&quot;bg-white border-b border-slate-200 shadow-sm&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
+className=&quot;p-6&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;div className=&quot;flex items-center justify-between&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;h1 className=&quot;text-3xl font-bold bg-gradient-to-r
+from-slate-800 to-slate-600 bg-clip-text text-transparent&quot;&gt;{currentPage
+=== 'dashboard' ? 'Pending Approvals' : 'Claims Repository'}&lt;/h1&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;p className=&quot;text-slate-600 mt-2 text-lg&quot;&gt;{currentPage
+=== 'dashboard' ? `Claims awaiting your review as ${userRole} team member` :
+'All approved and archived claims'}&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;div className=&quot;flex items-center space-x-3&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;!-- NEW: Download button --&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;button onclick=&quot;downloadCurrentHTML()&quot;
+className=&quot;px-4 py-2 rounded-xl border-2 border-slate-200
+hover:border-blue-500 hover:bg-blue-50 font-semibold text-slate-700&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>Download HTML<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;button className=&quot;relative p-3 hover:bg-slate-100 rounded-xl
+transition-colors&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;Bell className=&quot;w-6 h-6 text-slate-600&quot; /&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;span className=&quot;absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500
+rounded-full border-2 border-white&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>           
 </span>&lt;/header&gt;<o:p></o:p></p>
 
 <p class=MsoNormal><o:p>&nbsp;</o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;!-- Search
-/ Filter --&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;div
-class=&quot;bg-white border-b border-slate-200 p-6 shadow-sm&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
-class=&quot;flex space-x-4&quot;&gt;<o:p></o:p></p>
-
 <p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
-class=&quot;flex-1 relative&quot;&gt;<o:p></o:p></p>
+className=&quot;bg-white border-b border-slate-200 p-6 shadow-sm&quot;&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;span
-class=&quot;absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 rounded
-bg-slate-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
+className=&quot;flex space-x-4&quot;&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;div className=&quot;flex-1 relative&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;Search className=&quot;absolute left-4 top-1/2 transform
+-translate-y-1/2 text-slate-400 w-5 h-5&quot; /&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
 </span>&lt;input type=&quot;text&quot; placeholder=&quot;Search claims by title
-or description...&quot;<o:p></o:p></p>
+or description...&quot; value={searchTerm} onChange={(e) =&gt;
+setSearchTerm(e.target.value)} className=&quot;w-full pl-12 pr-4 py-3 border-2
+border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500
+focus:border-blue-500 transition-all&quot; /&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>                    
-</span>class=&quot;w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl
-focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all&quot;
-/&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>           
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
 </span>&lt;/div&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;select
-class=&quot;px-5 py-3 border-2 border-slate-200 rounded-xl focus:ring-2
-focus:ring-blue-500 focus:border-blue-500 font-medium text-slate-700&quot;&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;select value={filterStatus} onChange={(e) =&gt;
+setFilterStatus(e.target.value)} className=&quot;px-5 py-3 border-2
+border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500
+focus:border-blue-500 font-medium text-slate-700&quot;&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;option&gt;All Status&lt;/option&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;option value=&quot;all&quot;&gt;All Status&lt;/option&gt;&lt;option
+value=&quot;pending&quot;&gt;Pending&lt;/option&gt;&lt;option
+value=&quot;under_review&quot;&gt;Under Review&lt;/option&gt;&lt;option
+value=&quot;approved&quot;&gt;Approved&lt;/option&gt;&lt;option
+value=&quot;rejected&quot;&gt;Rejected&lt;/option&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;option&gt;Pending&lt;/option&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;option&gt;Under Review&lt;/option&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;option&gt;Approved&lt;/option&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;option&gt;Rejected&lt;/option&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>           
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
 </span>&lt;/select&gt;<o:p></o:p></p>
 
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>           
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
+className=&quot;flex-1 overflow-auto p-6&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>{selectedClaim ? (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;div className=&quot;bg-white rounded-2xl shadow-xl max-w-5xl mx-auto
+border border-slate-200&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;div className=&quot;p-8 border-b border-slate-200 bg-gradient-to-r
+from-slate-50 to-white&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;button onClick={() =&gt; setSelectedClaim(null)}
+className=&quot;text-blue-600 hover:text-blue-700 mb-6 flex items-center
+font-medium&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;ChevronRight className=&quot;w-5 h-5 rotate-180&quot; /&gt;&lt;span
+className=&quot;ml-2&quot;&gt;Back to list&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;div className=&quot;flex items-start justify-between&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;div className=&quot;flex items-center space-x-4 mb-3&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;h2 className=&quot;text-3xl font-bold
+text-slate-800&quot;&gt;{selectedClaim.title}&lt;/h2&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;span className={`px-4 py-2 rounded-xl text-sm font-semibold flex
+items-center space-x-2
+${getStatusColor(selectedClaim.status)}`}&gt;{getStatusIcon(selectedClaim.status)}&lt;span
+className=&quot;ml-1 capitalize&quot;&gt;{selectedClaim.status.replace('_', '
+')}&lt;/span&gt;&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;p className=&quot;text-slate-600 font-medium&quot;&gt;Claim ID:
+{selectedClaim.id}&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;div className=&quot;p-8 space-y-8&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;h3 className=&quot;font-bold text-slate-800 mb-3
+text-lg&quot;&gt;Description&lt;/h3&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;p className=&quot;text-slate-700 leading-relaxed text-lg bg-slate-50
+p-4 rounded-xl border
+border-slate-200&quot;&gt;{selectedClaim.description}&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;div className=&quot;grid grid-cols-2 gap-6&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;div className=&quot;bg-slate-50 p-5 rounded-xl border
+border-slate-200&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;h3 className=&quot;font-bold text-slate-800
+mb-4&quot;&gt;Metadata&lt;/h3&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;div className=&quot;space-y-3 text-sm&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;div className=&quot;flex justify-between
+items-center&quot;&gt;&lt;span
+className=&quot;text-slate-600&quot;&gt;Type:&lt;/span&gt;&lt;span
+className=&quot;font-semibold text-slate-800 bg-white px-3 py-1
+rounded-lg&quot;&gt;{selectedClaim.type}&lt;/span&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;div className=&quot;flex justify-between
+items-center&quot;&gt;&lt;span
+className=&quot;text-slate-600&quot;&gt;Theme:&lt;/span&gt;&lt;span
+className=&quot;font-semibold text-slate-800 bg-white px-3 py-1
+rounded-lg&quot;&gt;{selectedClaim.theme}&lt;/span&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;div className=&quot;flex justify-between
+items-center&quot;&gt;&lt;span
+className=&quot;text-slate-600&quot;&gt;Offering:&lt;/span&gt;&lt;span
+className=&quot;font-semibold text-slate-800 bg-white px-3 py-1
+rounded-lg&quot;&gt;{selectedClaim.offering}&lt;/span&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;div className=&quot;bg-slate-50 p-5 rounded-xl border
+border-slate-200&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;h3 className=&quot;font-bold text-slate-800 mb-4&quot;&gt;Submission
+Details&lt;/h3&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;div className=&quot;space-y-3 text-sm&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;div className=&quot;flex justify-between
+items-center&quot;&gt;&lt;span
+className=&quot;text-slate-600&quot;&gt;Submitted By:&lt;/span&gt;&lt;span
+className=&quot;font-semibold text-slate-800&quot;&gt;{selectedClaim.submittedBy}&lt;/span&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;div className=&quot;flex justify-between
+items-center&quot;&gt;&lt;span
+className=&quot;text-slate-600&quot;&gt;Date:&lt;/span&gt;&lt;span
+className=&quot;font-semibold text-slate-800&quot;&gt;{selectedClaim.submissionDate}&lt;/span&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;div className=&quot;bg-gradient-to-br from-blue-50 to-slate-50 p-6
+rounded-xl border border-blue-100&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;h3 className=&quot;font-bold text-slate-800 mb-5
+text-lg&quot;&gt;Review Progress&lt;/h3&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;div className=&quot;space-y-3&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>{selectedClaim.reviewers.map((reviewer, idx) =&gt; {<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>const isApproved = selectedClaim.approvals.includes(reviewer);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>const isRejected = selectedClaim.rejections.includes(reviewer);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>const isCurrent = selectedClaim.currentReviewer === reviewer;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>return (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;div key={idx} className=&quot;flex items-center space-x-4 bg-white
+p-4 rounded-xl shadow-sm&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                             
+</span>&lt;div className={`w-10 h-10 rounded-xl flex items-center
+justify-center shadow-md ${isApproved ? 'bg-gradient-to-br from-emerald-500
+to-emerald-600' : isRejected ? 'bg-gradient-to-br from-rose-500 to-rose-600' :
+isCurrent ? 'bg-gradient-to-br from-blue-500 to-blue-600' :
+'bg-slate-300'}`}&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span
+style='mso-spacerun:yes'>                                </span>{isApproved ?
+&lt;Check className=&quot;w-6 h-6 text-white&quot; /&gt; : isRejected ? &lt;X
+className=&quot;w-6 h-6 text-white&quot; /&gt; : isCurrent ? &lt;Clock
+className=&quot;w-6 h-6 text-white&quot; /&gt; : &lt;span
+className=&quot;text-white font-bold&quot;&gt;{idx + 1}&lt;/span&gt;}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                             
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                             
+</span>&lt;div className=&quot;flex-1&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span
+style='mso-spacerun:yes'>                                </span>&lt;p
+className=&quot;font-bold text-slate-800&quot;&gt;{reviewer} Team&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span
+style='mso-spacerun:yes'>                                </span>&lt;p
+className=&quot;text-sm text-slate-600 font-medium&quot;&gt;{isApproved ?
+'Approved' : isRejected ? 'Rejected' : isCurrent ? 'Currently reviewing' :
+'Pending'}&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                             
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>);<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>})}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>{selectedClaim.comments.length &gt; 0 &amp;&amp; (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;h3 className=&quot;font-bold text-slate-800 mb-4
+text-lg&quot;&gt;Comments and Feedback&lt;/h3&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;div className=&quot;space-y-3&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>{selectedClaim.comments.map((c, idx) =&gt; (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;div key={idx} className=&quot;bg-amber-50 border border-amber-200
+rounded-xl p-5&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                             
+</span>&lt;div className=&quot;flex items-center justify-between
+mb-3&quot;&gt;&lt;span className=&quot;font-bold
+text-slate-800&quot;&gt;{c.reviewer} Team&lt;/span&gt;&lt;span className=&quot;text-sm
+text-slate-600 font-medium&quot;&gt;{c.date}&lt;/span&gt;&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                             
+</span>&lt;p className=&quot;text-slate-700&quot;&gt;{c.text}&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>))}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                    </span>)}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>{selectedClaim.currentReviewer === userRole &amp;&amp;
+selectedClaim.status !== 'approved' &amp;&amp; selectedClaim.status !==
+'rejected' &amp;&amp; (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;div className=&quot;flex space-x-4 pt-6 border-t
+border-slate-200&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;button onClick={() =&gt; handleApprove(selectedClaim.id)}
+className=&quot;flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700
+hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-4
+rounded-xl flex items-center justify-center space-x-2 transition-all shadow-lg
+hover:shadow-xl&quot;&gt;&lt;Check className=&quot;w-6 h-6&quot;
+/&gt;&lt;span&gt;Approve Claim&lt;/span&gt;&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;button onClick={() =&gt; handleReject(selectedClaim.id)}
+className=&quot;flex-1 bg-gradient-to-r from-rose-600 to-rose-700
+hover:from-rose-700 hover:to-rose-800 text-white font-bold py-4 rounded-xl flex
+items-center justify-center space-x-2 transition-all shadow-lg
+hover:shadow-xl&quot;&gt;&lt;X className=&quot;w-6 h-6&quot;
+/&gt;&lt;span&gt;Reject Claim&lt;/span&gt;&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                    </span>)}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>) : (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;div className=&quot;grid gap-5&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>{filteredClaims.length === 0 ? (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;div className=&quot;text-center py-16 bg-white rounded-2xl shadow-sm
+border border-slate-200&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;FileText className=&quot;w-20 h-20 text-slate-300 mx-auto mb-6&quot;
+/&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;h3 className=&quot;text-2xl font-bold text-slate-700
+mb-3&quot;&gt;No claims found&lt;/h3&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;p className=&quot;text-slate-500 text-lg&quot;&gt;{currentPage ===
+'dashboard' ? 'You have no pending claims to review at this time.' : 'No claims
+match your search criteria.'}&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                  </span>) :
+(<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                   
+</span>filteredClaims.map(claim =&gt; (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;div key={claim.id} onClick={() =&gt; setSelectedClaim(claim)}
+className=&quot;bg-white rounded-2xl shadow-md hover:shadow-xl transition-all
+cursor-pointer p-6 border-2 border-slate-200 hover:border-blue-400&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;div className=&quot;flex items-start justify-between mb-5&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;div className=&quot;flex-1&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;h3 className=&quot;text-xl font-bold text-slate-800
+mb-3&quot;&gt;{claim.title}&lt;/h3&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;p className=&quot;text-slate-600 line-clamp-2
+leading-relaxed&quot;&gt;{claim.description}&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;span className={`px-4 py-2 rounded-xl text-xs font-bold flex
+items-center space-x-2 ml-4
+${getStatusColor(claim.status)}`}&gt;{getStatusIcon(claim.status)}&lt;span
+className=&quot;ml-1 capitalize&quot;&gt;{claim.status.replace('_', '
+')}&lt;/span&gt;&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;div className=&quot;flex items-center justify-between&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;div className=&quot;flex items-center space-x-5 text-sm
+text-slate-600&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;span className=&quot;flex items-center
+font-medium&quot;&gt;&lt;Users className=&quot;w-4 h-4 mr-2&quot;
+/&gt;{claim.submittedBy}&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;span className=&quot;flex items-center
+font-medium&quot;&gt;&lt;Clock className=&quot;w-4 h-4 mr-2&quot;
+/&gt;{claim.submissionDate}&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;span className=&quot;bg-blue-100 text-blue-700 px-3 py-1 rounded-lg
+font-semibold border border-blue-200&quot;&gt;{claim.offering}&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;div className=&quot;flex items-center space-x-3&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;div className=&quot;flex -space-x-2&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                             
+</span>{claim.approvals.map((approver, idx) =&gt; (&lt;div key={idx}
+className=&quot;w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600
+rounded-full flex items-center justify-center border-2 border-white
+shadow-md&quot;&gt;&lt;Check className=&quot;w-4 h-4 text-white&quot;
+/&gt;&lt;/div&gt;))}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                           
+</span>&lt;span className=&quot;text-slate-700
+font-bold&quot;&gt;{claim.approvals.length}/{claim.reviewers.length}&lt;/span&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                         
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                       
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                     
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                    </span>))<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                  </span>)}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>)}<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>           
+</span>&lt;/div&gt;<o:p></o:p></p>
+
 <p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>         
+</span>{showCommentModal &amp;&amp; (<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
+className=&quot;fixed inset-0 bg-black bg-opacity-60 flex items-center
+justify-center p-4 z-50 backdrop-blur-sm&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
+className=&quot;bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 border
+border-slate-200&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                </span>&lt;h2
+className=&quot;text-2xl font-bold text-slate-800 mb-4&quot;&gt;Rejection
+Reason&lt;/h2&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                </span>&lt;p
+className=&quot;text-slate-600 mb-5&quot;&gt;Please provide a detailed reason
+for rejecting this claim:&lt;/p&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;textarea value={comment} onChange={(e) =&gt;
+setComment(e.target.value)} className=&quot;w-full border-2 border-slate-200
+rounded-xl p-4 h-36 focus:ring-2 focus:ring-rose-500 focus:border-rose-500
+transition-all&quot; placeholder=&quot;Enter your comments and
+feedback...&quot; /&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;div className=&quot;flex space-x-3 mt-6&quot;&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;button onClick={submitRejection} className=&quot;flex-1
+bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700
+hover:to-rose-800 text-white font-bold py-3 rounded-xl transition-all shadow-lg&quot;&gt;Submit
+Rejection&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>                 
+</span>&lt;button onClick={() =&gt; { setShowCommentModal(false);
+setComment(''); }} className=&quot;flex-1 bg-slate-200 hover:bg-slate-300
+text-slate-800 font-bold py-3 rounded-xl transition-all&quot;&gt;Cancel&lt;/button&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>               
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>             
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>           
+</span>&lt;/div&gt;<o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>)}<o:p></o:p></p>
 
 <p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;/div&gt;<o:p></o:p></p>
 
-<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>);<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;!-- Cards
-list (static sample) --&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;div
-class=&quot;flex-1 overflow-auto p-6&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;div
-class=&quot;grid gap-5&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;!--
-Claim Card --&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
-class=&quot;bg-white rounded-2xl shadow-md hover:shadow-xl transition-all
-cursor-pointer p-6 border-2 border-slate-200 hover:border-blue-400&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
-class=&quot;flex items-start justify-between mb-5&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;div class=&quot;flex-1&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;h3 class=&quot;text-xl font-bold text-slate-800
-mb-3&quot;&gt;Synchrony Image Guidance Technology&lt;/h3&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;p class=&quot;text-slate-600 leading-relaxed&quot;&gt;Synchrony is
-the only technology that uses image guidance to automatically adapt and
-synchronize the radiation beam to the position of the tumor in
-real-time.&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;span class=&quot;px-4 py-2 rounded-xl text-xs font-bold flex
-items-center space-x-2 ml-4 bg-amber-100 text-amber-700 border
-border-amber-200&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;w-4 h-4 rounded bg-amber-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;ml-1 capitalize&quot;&gt;pending&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
-class=&quot;flex items-center justify-between&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;div class=&quot;flex items-center space-x-5 text-sm
-text-slate-600&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;flex items-center font-medium&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;span class=&quot;w-4 h-4 mr-2 rounded
-bg-slate-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>Sarah Johnson<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;flex items-center font-medium&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;span class=&quot;w-4 h-4 mr-2 rounded
-bg-slate-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>2025-10-15<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;bg-blue-100 text-blue-700 px-3 py-1 rounded-lg
-font-semibold border border-blue-200&quot;&gt;Synchrony&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;div class=&quot;flex items-center space-x-3&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;div class=&quot;flex -space-x-2&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;div class=&quot;w-8 h-8 bg-gradient-to-br from-emerald-500
-to-emerald-600 rounded-full flex items-center justify-center border-2
-border-white shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                     
-</span>&lt;span class=&quot;w-4 h-4 rounded bg-white/70&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;text-slate-700 font-bold&quot;&gt;0/4&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>           
-</span>&lt;/div&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>}<o:p></o:p></p>
 
 <p class=MsoNormal><o:p>&nbsp;</o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;!--
-Another Claim Card --&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>const root =
+ReactDOM.createRoot(document.getElementById('root'));<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
-class=&quot;bg-white rounded-2xl shadow-md hover:shadow-xl transition-all
-cursor-pointer p-6 border-2 border-slate-200 hover:border-blue-400&quot;&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>   
+</span>root.render(&lt;ClaimsApprovalPrototype /&gt;);<o:p></o:p></p>
 
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
-class=&quot;flex items-start justify-between mb-5&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;div class=&quot;flex-1&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;h3 class=&quot;text-xl font-bold text-slate-800
-mb-3&quot;&gt;ClearRT Precision Treatment&lt;/h3&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;p class=&quot;text-slate-600 leading-relaxed&quot;&gt;Deliver more
-personalized and more precise treatment plans for more patients.&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;span class=&quot;px-4 py-2 rounded-xl text-xs font-bold flex
-items-center space-x-2 ml-4 bg-blue-100 text-blue-700 border
-border-blue-200&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;w-4 h-4 rounded bg-blue-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;ml-1 capitalize&quot;&gt;under review&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
-class=&quot;flex items-center justify-between&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;div class=&quot;flex items-center space-x-5 text-sm
-text-slate-600&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;flex items-center font-medium&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;span class=&quot;w-4 h-4 mr-2 rounded
-bg-slate-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>Michael Chen<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;flex items-center font-medium&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;span class=&quot;w-4 h-4 mr-2 rounded
-bg-slate-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>2025-10-18<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;bg-blue-100 text-blue-700 px-3 py-1 rounded-lg
-font-semibold border border-blue-200&quot;&gt;Precision&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;div class=&quot;flex items-center space-x-3&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;div class=&quot;flex -space-x-2&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;div class=&quot;w-8 h-8 bg-gradient-to-br from-emerald-500
-to-emerald-600 rounded-full flex items-center justify-center border-2
-border-white shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                     
-</span>&lt;span class=&quot;w-4 h-4 rounded bg-white/70&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;text-slate-700 font-bold&quot;&gt;1/3&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>           
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;!--
-Approved sample --&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>            </span>&lt;div
-class=&quot;bg-white rounded-2xl shadow-md hover:shadow-xl transition-all
-cursor-pointer p-6 border-2 border-slate-200 hover:border-blue-400&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
-class=&quot;flex items-start justify-between mb-5&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;div class=&quot;flex-1&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;h3 class=&quot;text-xl font-bold text-slate-800
-mb-3&quot;&gt;ClearRT MR Imaging Integration&lt;/h3&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;p class=&quot;text-slate-600 leading-relaxed&quot;&gt;Hardware-based
-image reconstruction avoids distortion caused by MR imaging and artifacts of
-conventional cone beam CT.&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;span class=&quot;px-4 py-2 rounded-xl text-xs font-bold flex
-items-center space-x-2 ml-4 bg-emerald-100 text-emerald-700 border
-border-emerald-200&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;w-4 h-4 rounded
-bg-emerald-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;ml-1 capitalize&quot;&gt;approved&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>              </span>&lt;div
-class=&quot;flex items-center justify-between&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;div class=&quot;flex items-center space-x-5 text-sm
-text-slate-600&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;flex items-center font-medium&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;span class=&quot;w-4 h-4 mr-2 rounded
-bg-slate-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>Emily Rodriguez<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;flex items-center font-medium&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;span class=&quot;w-4 h-4 mr-2 rounded
-bg-slate-300&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>2025-10-20<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;bg-blue-100 text-blue-700 px-3 py-1 rounded-lg
-font-semibold border border-blue-200&quot;&gt;ClearRT&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;div class=&quot;flex items-center space-x-3&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;div class=&quot;flex -space-x-2&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;div class=&quot;w-8 h-8 bg-gradient-to-br from-emerald-500
-to-emerald-600 rounded-full flex items-center justify-center border-2
-border-white shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                     
-</span>&lt;span class=&quot;w-4 h-4 rounded bg-white/70&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;div class=&quot;w-8 h-8 bg-gradient-to-br from-emerald-500
-to-emerald-600 rounded-full flex items-center justify-center border-2
-border-white shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                     
-</span>&lt;span class=&quot;w-4 h-4 rounded bg-white/70&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;div class=&quot;w-8 h-8 bg-gradient-to-br from-emerald-500
-to-emerald-600 rounded-full flex items-center justify-center border-2
-border-white shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                     
-</span>&lt;span class=&quot;w-4 h-4 rounded bg-white/70&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;div class=&quot;w-8 h-8 bg-gradient-to-br from-emerald-500
-to-emerald-600 rounded-full flex items-center justify-center border-2
-border-white shadow-md&quot;&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                     
-</span>&lt;span class=&quot;w-4 h-4 rounded bg-white/70&quot;&gt;&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                   
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>                 
-</span>&lt;span class=&quot;text-slate-700 font-bold&quot;&gt;4/4&lt;/span&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>               
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>             
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>           
-</span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>          </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>        </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>      </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;div
-class=&quot;divider&quot;&gt;&lt;/div&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>    </span>&lt;p
-class=&quot;notice&quot;&gt;Note: This is a non-interactive approximation. If
-you want the static page to only show the login screen or only the app view, I
-can generate a trimmed version as well.&lt;/p&gt;<o:p></o:p></p>
-
-<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;/div&gt;<o:p></o:p></p>
+<p class=MsoNormal><span style='mso-spacerun:yes'>  </span>&lt;/script&gt;<o:p></o:p></p>
 
 <p class=MsoNormal>&lt;/body&gt;<o:p></o:p></p>
 
