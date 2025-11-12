@@ -1,581 +1,530 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accuray Claims Approval System - Prototype</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lucide-react@0.263.1/dist/umd/lucide-react.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Aptos;
+	panose-1:2 11 0 4 2 2 2 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:0in;
+	line-height:115%;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+.MsoChpDefault
+	{font-family:"Aptos",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:115%;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
 </head>
-<body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState } = React;
-        const { ChevronRight, Search, Check, X, FileText, Clock, CheckCircle, XCircle, AlertCircle, Home, Database, Users, Bell, LogOut } = lucide;
+<body lang=EN-US style='word-wrap:break-word'>
 
-        const ClaimsApprovalPrototype = () => {
-          const [currentPage, setCurrentPage] = useState('login');
-          const [userRole, setUserRole] = useState('');
-          const [selectedClaim, setSelectedClaim] = useState(null);
-          const [searchTerm, setSearchTerm] = useState('');
-          const [filterStatus, setFilterStatus] = useState('all');
-          const [showCommentModal, setShowCommentModal] = useState(false);
-          const [comment, setComment] = useState('');
-          const [claims, setClaims] = useState([
-            {
-              id: 'CLM-001',
-              title: 'Synchrony Image Guidance Technology',
-              description: 'Synchrony is the only technology that uses image guidance to automatically adapt and synchronize the radiation beam to the position of the tumor in real-time.',
-              submittedBy: 'Sarah Johnson',
-              submissionDate: '2025-10-15',
-              type: 'Competitive',
-              theme: 'Product',
-              offering: 'Synchrony',
-              status: 'pending',
-              reviewers: ['Product', 'Clinical', 'Regulatory', 'Legal'],
-              currentReviewer: 'Product',
-              approvals: [],
-              rejections: [],
-              comments: []
-            },
-            {
-              id: 'CLM-002',
-              title: 'ClearRT Precision Treatment',
-              description: 'Deliver more personalized and more precise treatment plans for more patients.',
-              submittedBy: 'Michael Chen',
-              submissionDate: '2025-10-18',
-              type: 'Clinical',
-              theme: 'Software',
-              offering: 'Precision',
-              status: 'pending',
-              reviewers: ['Product', 'Clinical', 'Engineering'],
-              currentReviewer: 'Clinical',
-              approvals: ['Product'],
-              rejections: [],
-              comments: []
-            },
-            {
-              id: 'CLM-003',
-              title: 'ClearRT MR Imaging Integration',
-              description: 'ClearRT avoids the distortion caused by MR imaging and the artifacts associated with conventional cone beam CT by using hardware-based image reconstruction.',
-              submittedBy: 'Emily Rodriguez',
-              submissionDate: '2025-10-20',
-              type: 'Competitive',
-              theme: 'Software',
-              offering: 'ClearRT',
-              status: 'approved',
-              reviewers: ['Product', 'Clinical', 'Regulatory', 'Engineering'],
-              currentReviewer: null,
-              approvals: ['Product', 'Clinical', 'Regulatory', 'Engineering'],
-              rejections: [],
-              comments: []
-            },
-            {
-              id: 'CLM-004',
-              title: 'ClearRT Treatment Time Efficiency',
-              description: 'It takes an image reconstruction in minutes and the industry-leading image quality means clinicians can more confidently proceed with treatment.',
-              submittedBy: 'David Park',
-              submissionDate: '2025-10-22',
-              type: 'Technological',
-              theme: 'Software',
-              offering: 'ClearRT',
-              status: 'rejected',
-              reviewers: ['Product', 'Clinical', 'Regulatory'],
-              currentReviewer: null,
-              approvals: ['Product'],
-              rejections: ['Clinical'],
-              comments: [{ reviewer: 'Clinical', text: 'Need specific time metrics and clinical validation data', date: '2025-10-25' }]
-            },
-            {
-              id: 'CLM-005',
-              title: 'ClearRT Anatomical Accuracy',
-              description: 'The industry leading image quality and anatomical accuracy produced by ClearRT allows clinicians to quickly and confidently proceed with treatment.',
-              submittedBy: 'Lisa Wang',
-              submissionDate: '2025-10-24',
-              type: 'Competitive',
-              theme: 'Software',
-              offering: 'ClearRT',
-              status: 'under_review',
-              reviewers: ['Product', 'Clinical', 'Regulatory', 'Engineering'],
-              currentReviewer: 'Regulatory',
-              approvals: ['Product', 'Clinical'],
-              rejections: [],
-              comments: []
-            }
-          ]);
+<div class=WordSection1>
 
-          const roles = ['Product', 'Clinical', 'Regulatory', 'Engineering', 'Legal'];
+<p class=MsoNormal>&lt;!DOCTYPE html&gt;</p>
 
-          const handleLogin = (role) => {
-            setUserRole(role);
-            setCurrentPage('dashboard');
-          };
+<p class=MsoNormal>&lt;html lang=&quot;en&quot;&gt;</p>
 
-          const handleApprove = (claimId) => {
-            setClaims(claims.map(claim => {
-              if (claim.id === claimId) {
-                const newApprovals = [...claim.approvals, userRole];
-                const remainingReviewers = claim.reviewers.filter(r => !newApprovals.includes(r));
-                return {
-                  ...claim,
-                  approvals: newApprovals,
-                  currentReviewer: remainingReviewers.length > 0 ? remainingReviewers[0] : null,
-                  status: remainingReviewers.length === 0 ? 'approved' : 'under_review'
-                };
-              }
-              return claim;
-            }));
-            setSelectedClaim(null);
-          };
+<p class=MsoNormal>&lt;head&gt;</p>
 
-          const handleReject = () => {
-            setShowCommentModal(true);
-          };
+<p class=MsoNormal>&lt;meta charset=&quot;UTF-8&quot; /&gt;</p>
 
-          const submitRejection = () => {
-            if (selectedClaim) {
-              setClaims(claims.map(claim => {
-                if (claim.id === selectedClaim.id) {
-                  return {
-                    ...claim,
-                    rejections: [...claim.rejections, userRole],
-                    status: 'rejected',
-                    comments: [...claim.comments, { 
-                      reviewer: userRole, 
-                      text: comment, 
-                      date: new Date().toISOString().split('T')[0] 
-                    }]
-                  };
-                }
-                return claim;
-              }));
-            }
-            setShowCommentModal(false);
-            setComment('');
-            setSelectedClaim(null);
-          };
+<p class=MsoNormal>&lt;title&gt;Marketing Claims Approval Tool
+Prototype&lt;/title&gt;</p>
 
-          const getStatusColor = (status) => {
-            switch(status) {
-              case 'approved': return 'bg-emerald-100 text-emerald-700 border border-emerald-200';
-              case 'rejected': return 'bg-rose-100 text-rose-700 border border-rose-200';
-              case 'under_review': return 'bg-blue-100 text-blue-700 border border-blue-200';
-              default: return 'bg-amber-100 text-amber-700 border border-amber-200';
-            }
-          };
+<p class=MsoNormal>&lt;style&gt;</p>
 
-          const getStatusIcon = (status) => {
-            const iconProps = { size: 16 };
-            switch(status) {
-              case 'approved': return <CheckCircle {...iconProps} />;
-              case 'rejected': return <XCircle {...iconProps} />;
-              case 'under_review': return <Clock {...iconProps} />;
-              default: return <AlertCircle {...iconProps} />;
-            }
-          };
+<p class=MsoNormal>  body { font-family: Arial, sans-serif; background:
+#f8f9fa; margin: 0; }</p>
 
-          const filteredClaims = claims.filter(claim => {
-            const matchesSearch = claim.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                 claim.description.toLowerCase().includes(searchTerm.toLowerCase());
-            const matchesFilter = filterStatus === 'all' || claim.status === filterStatus;
-            const isPendingForUser = currentPage === 'dashboard' ? 
-              (claim.currentReviewer === userRole && claim.status !== 'approved' && claim.status !== 'rejected') : true;
-            return matchesSearch && matchesFilter && (currentPage === 'repository' || isPendingForUser);
-          });
+<p class=MsoNormal>  header { background: #004080; color: white; padding: 10px
+20px; }</p>
 
-          if (currentPage === 'login') {
-            return (
-              <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4">
-                <div className="bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full border border-slate-200">
-                  <div className="text-center mb-8">
-                    <div className="bg-gradient-to-br from-blue-600 to-blue-800 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                      <FileText size={40} color="white" />
-                    </div>
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent mb-3">
-                      Accuray Claims Portal
-                    </h1>
-                    <p className="text-slate-600 text-lg">Product Claims Matrix Approval</p>
-                    <div className="mt-4 pt-4 border-t border-slate-200">
-                      <p className="text-sm text-slate-500">Select your department to continue</p>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    {roles.map(role => (
-                      <button
-                        key={role}
-                        onClick={() => handleLogin(role)}
-                        className="w-full bg-white border-2 border-slate-200 hover:border-blue-500 hover:bg-blue-50 rounded-xl p-4 flex items-center justify-between transition-all group shadow-sm hover:shadow-md"
-                      >
-                        <span className="text-slate-700 font-semibold group-hover:text-blue-700">{role} Team</span>
-                        <ChevronRight size={20} className="text-slate-400 group-hover:text-blue-600" />
-                      </button>
-                    ))}
-                  </div>
-                  <div className="mt-8 pt-6 border-t border-slate-200 text-center">
-                    <p className="text-xs text-slate-500">© 2025 Accuray Incorporated - Confidential</p>
-                  </div>
-                </div>
-              </div>
-            );
-          }
+<p class=MsoNormal>  h1 { margin: 0; font-size: 1.4em; }</p>
 
-          return (
-            <div className="min-h-screen bg-slate-50 flex">
-              <div className="w-72 bg-gradient-to-b from-slate-800 to-slate-900 text-white flex flex-col shadow-2xl">
-                <div className="p-6 border-b border-slate-700">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="bg-gradient-to-br from-blue-500 to-blue-700 p-3 rounded-xl shadow-lg">
-                      <FileText size={28} />
-                    </div>
-                    <div>
-                      <h2 className="font-bold text-xl">Accuray</h2>
-                      <p className="text-slate-400 text-sm">Claims Portal</p>
-                    </div>
-                  </div>
-                  <div className="bg-slate-700/50 rounded-lg p-3 mt-4">
-                    <p className="text-xs text-slate-400 mb-1">Logged in as</p>
-                    <p className="text-white font-semibold">{userRole} Team</p>
-                  </div>
-                </div>
+<p class=MsoNormal>  nav button { margin: 5px; padding: 8px 12px; background:
+#0078D7; color: white; border: none; border-radius: 4px; cursor: pointer; }</p>
 
-                <nav className="flex-1 p-4 space-y-2">
-                  <button
-                    onClick={() => setCurrentPage('dashboard')}
-                    className={`w-full flex items-center space-x-3 p-3 rounded-xl transition-all ${
-                      currentPage === 'dashboard' 
-                        ? 'bg-blue-600 shadow-lg shadow-blue-900/50' 
-                        : 'hover:bg-slate-700'
-                    }`}
-                  >
-                    <Home size={20} />
-                    <span className="font-medium">Pending Approvals</span>
-                    {filteredClaims.length > 0 && currentPage === 'dashboard' && (
-                      <span className="ml-auto bg-rose-500 text-white text-xs rounded-full px-2.5 py-1 font-semibold shadow-lg">
-                        {filteredClaims.length}
-                      </span>
-                    )}
-                  </button>
-                  
-                  <button
-                    onClick={() => setCurrentPage('repository')}
-                    className={`w-full flex items-center space-x-3 p-3 rounded-xl transition-all ${
-                      currentPage === 'repository' 
-                        ? 'bg-blue-600 shadow-lg shadow-blue-900/50' 
-                        : 'hover:bg-slate-700'
-                    }`}
-                  >
-                    <Database size={20} />
-                    <span className="font-medium">Claims Repository</span>
-                  </button>
-                </nav>
+<p class=MsoNormal>  nav button:hover { background: #005fa3; }</p>
 
-                <div className="p-4 border-t border-slate-700">
-                  <button
-                    onClick={() => setCurrentPage('login')}
-                    className="w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-slate-700 transition-all"
-                  >
-                    <LogOut size={20} />
-                    <span className="font-medium">Logout</span>
-                  </button>
-                  <div className="mt-4 text-center">
-                    <p className="text-xs text-slate-500">Accuray Confidential</p>
-                  </div>
-                </div>
-              </div>
+<p class=MsoNormal>  main { padding: 20px; }</p>
 
-              <div className="flex-1 flex flex-col">
-                <header className="bg-white border-b border-slate-200 shadow-sm">
-                  <div className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
-                          {currentPage === 'dashboard' ? 'Pending Approvals' : 'Claims Repository'}
-                        </h1>
-                        <p className="text-slate-600 mt-2 text-lg">
-                          {currentPage === 'dashboard' 
-                            ? `Claims awaiting your review as ${userRole} team member`
-                            : 'All approved and archived claims'}
-                        </p>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <button className="relative p-3 hover:bg-slate-100 rounded-xl transition-colors">
-                          <Bell size={24} className="text-slate-600" />
-                          <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </header>
+<p class=MsoNormal>  table { border-collapse: collapse; width: 100%;
+margin-top: 10px; }</p>
 
-                <div className="bg-white border-b border-slate-200 p-6 shadow-sm">
-                  <div className="flex space-x-4">
-                    <div className="flex-1 relative">
-                      <Search size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" />
-                      <input
-                        type="text"
-                        placeholder="Search claims by title or description..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                      />
-                    </div>
-                    <select
-                      value={filterStatus}
-                      onChange={(e) => setFilterStatus(e.target.value)}
-                      className="px-5 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium text-slate-700"
-                    >
-                      <option value="all">All Status</option>
-                      <option value="pending">Pending</option>
-                      <option value="under_review">Under Review</option>
-                      <option value="approved">Approved</option>
-                      <option value="rejected">Rejected</option>
-                    </select>
-                  </div>
-                </div>
+<p class=MsoNormal>  th, td { border: 1px solid #ccc; padding: 8px; text-align:
+left; }</p>
 
-                <div className="flex-1 overflow-auto p-6">
-                  {selectedClaim ? (
-                    <div className="bg-white rounded-2xl shadow-xl max-w-5xl mx-auto border border-slate-200">
-                      <div className="p-8 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white">
-                        <button
-                          onClick={() => setSelectedClaim(null)}
-                          className="text-blue-600 hover:text-blue-700 mb-6 flex items-center font-medium"
-                        >
-                          <ChevronRight size={20} className="rotate-180" />
-                          <span className="ml-2">Back to list</span>
-                        </button>
-                        
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <div className="flex items-center space-x-4 mb-3">
-                              <h2 className="text-3xl font-bold text-slate-800">{selectedClaim.title}</h2>
-                              <span className={`px-4 py-2 rounded-xl text-sm font-semibold flex items-center space-x-2 ${getStatusColor(selectedClaim.status)}`}>
-                                {getStatusIcon(selectedClaim.status)}
-                                <span className="ml-1 capitalize">{selectedClaim.status.replace('_', ' ')}</span>
-                              </span>
-                            </div>
-                            <p className="text-slate-600 font-medium">Claim ID: {selectedClaim.id}</p>
-                          </div>
-                        </div>
-                      </div>
+<p class=MsoNormal>  th { background-color: #0078D7; color: white; }</p>
 
-                      <div className="p-8 space-y-8">
-                        <div>
-                          <h3 className="font-bold text-slate-800 mb-3 text-lg">Description</h3>
-                          <p className="text-slate-700 leading-relaxed text-lg bg-slate-50 p-4 rounded-xl border border-slate-200">{selectedClaim.description}</p>
-                        </div>
+<p class=MsoNormal>  .hidden { display: none; }</p>
 
-                        <div className="grid grid-cols-2 gap-6">
-                          <div className="bg-slate-50 p-5 rounded-xl border border-slate-200">
-                            <h3 className="font-bold text-slate-800 mb-4">Metadata</h3>
-                            <div className="space-y-3 text-sm">
-                              <div className="flex justify-between items-center">
-                                <span className="text-slate-600">Type:</span>
-                                <span className="font-semibold text-slate-800 bg-white px-3 py-1 rounded-lg">{selectedClaim.type}</span>
-                              </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-slate-600">Theme:</span>
-                                <span className="font-semibold text-slate-800 bg-white px-3 py-1 rounded-lg">{selectedClaim.theme}</span>
-                              </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-slate-600">Offering:</span>
-                                <span className="font-semibold text-slate-800 bg-white px-3 py-1 rounded-lg">{selectedClaim.offering}</span>
-                              </div>
-                            </div>
-                          </div>
+<p class=MsoNormal>  .btn-approve { background-color: #28a745; color: white;
+padding: 6px 10px; border: none; border-radius: 3px; cursor: pointer; }</p>
 
-                          <div className="bg-slate-50 p-5 rounded-xl border border-slate-200">
-                            <h3 className="font-bold text-slate-800 mb-4">Submission Details</h3>
-                            <div className="space-y-3 text-sm">
-                              <div className="flex justify-between items-center">
-                                <span className="text-slate-600">Submitted By:</span>
-                                <span className="font-semibold text-slate-800">{selectedClaim.submittedBy}</span>
-                              </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-slate-600">Date:</span>
-                                <span className="font-semibold text-slate-800">{selectedClaim.submissionDate}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+<p class=MsoNormal>  .btn-reject { background-color: #dc3545; color: white;
+padding: 6px 10px; border: none; border-radius: 3px; cursor: pointer;
+margin-left: 8px; }</p>
 
-                        <div className="bg-gradient-to-br from-blue-50 to-slate-50 p-6 rounded-xl border border-blue-100">
-                          <h3 className="font-bold text-slate-800 mb-5 text-lg">Review Progress</h3>
-                          <div className="space-y-3">
-                            {selectedClaim.reviewers.map((reviewer, idx) => {
-                              const isApproved = selectedClaim.approvals.includes(reviewer);
-                              const isRejected = selectedClaim.rejections.includes(reviewer);
-                              const isCurrent = selectedClaim.currentReviewer === reviewer;
-                              
-                              return (
-                                <div key={idx} className="flex items-center space-x-4 bg-white p-4 rounded-xl shadow-sm">
-                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-md ${
-                                    isApproved ? 'bg-gradient-to-br from-emerald-500 to-emerald-600' : 
-                                    isRejected ? 'bg-gradient-to-br from-rose-500 to-rose-600' : 
-                                    isCurrent ? 'bg-gradient-to-br from-blue-500 to-blue-600' : 
-                                    'bg-slate-300'
-                                  }`}>
-                                    {isApproved ? <Check size={24} color="white" /> : 
-                                     isRejected ? <X size={24} color="white" /> :
-                                     isCurrent ? <Clock size={24} color="white" /> :
-                                     <span className="text-white font-bold">{idx + 1}</span>}
-                                  </div>
-                                  <div className="flex-1">
-                                    <p className="font-bold text-slate-800">{reviewer} Team</p>
-                                    <p className="text-sm text-slate-600 font-medium">
-                                      {isApproved ? 'Approved' : isRejected ? 'Rejected' : isCurrent ? 'Currently reviewing' : 'Pending'}
-                                    </p>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
+<p class=MsoNormal>  .btn-approve:hover { background-color: #218838; }</p>
 
-                        {selectedClaim.comments.length > 0 && (
-                          <div>
-                            <h3 className="font-bold text-slate-800 mb-4 text-lg">Comments and Feedback</h3>
-                            <div className="space-y-3">
-                              {selectedClaim.comments.map((c, idx) => (
-                                <div key={idx} className="bg-amber-50 border border-amber-200 rounded-xl p-5">
-                                  <div className="flex items-center justify-between mb-3">
-                                    <span className="font-bold text-slate-800">{c.reviewer} Team</span>
-                                    <span className="text-sm text-slate-600 font-medium">{c.date}</span>
-                                  </div>
-                                  <p className="text-slate-700">{c.text}</p>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
+<p class=MsoNormal>  .btn-reject:hover { background-color: #c82333; }</p>
 
-                        {selectedClaim.currentReviewer === userRole && selectedClaim.status !== 'approved' && selectedClaim.status !== 'rejected' && (
-                          <div className="flex space-x-4 pt-6 border-t border-slate-200">
-                            <button
-                              onClick={() => handleApprove(selectedClaim.id)}
-                              className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-4 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-lg hover:shadow-xl"
-                            >
-                              <Check size={24} />
-                              <span>Approve Claim</span>
-                            </button>
-                            <button
-                              onClick={handleReject}
-                              className="flex-1 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white font-bold py-4 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-lg hover:shadow-xl"
-                            >
-                              <X size={24} />
-                              <span>Reject Claim</span>
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="grid gap-5">
-                      {filteredClaims.length === 0 ? (
-                        <div className="text-center py-16 bg-white rounded-2xl shadow-sm border border-slate-200">
-                          <FileText size={80} className="text-slate-300 mx-auto mb-6" />
-                          <h3 className="text-2xl font-bold text-slate-700 mb-3">No claims found</h3>
-                          <p className="text-slate-500 text-lg">
-                            {currentPage === 'dashboard' 
-                              ? 'You have no pending claims to review at this time.'
-                              : 'No claims match your search criteria.'}
-                          </p>
-                        </div>
-                      ) : (
-                        filteredClaims.map(claim => (
-                          <div
-                            key={claim.id}
-                            onClick={() => setSelectedClaim(claim)}
-                            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all cursor-pointer p-6 border-2 border-slate-200 hover:border-blue-400"
-                          >
-                            <div className="flex items-start justify-between mb-5">
-                              <div className="flex-1">
-                                <h3 className="text-xl font-bold text-slate-800 mb-3">{claim.title}</h3>
-                                <p className="text-slate-600 line-clamp-2 leading-relaxed">{claim.description}</p>
-                              </div>
-                              <span className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 ml-4 ${getStatusColor(claim.status)}`}>
-                                {getStatusIcon(claim.status)}
-                                <span className="ml-1 capitalize">{claim.status.replace('_', ' ')}</span>
-                              </span>
-                            </div>
+<p class=MsoNormal>&lt;/style&gt;</p>
 
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center space-x-5 text-sm text-slate-600">
-                                <span className="flex items-center font-medium">
-                                  <Users size={16} className="mr-2" />
-                                  {claim.submittedBy}
-                                </span>
-                                <span className="flex items-center font-medium">
-                                  <Clock size={16} className="mr-2" />
-                                  {claim.submissionDate}
-                                </span>
-                                <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg font-semibold border border-blue-200">
-                                  {claim.offering}
-                                </span>
-                              </div>
-                              
-                              <div className="flex items-center space-x-3">
-                                <div className="flex -space-x-2">
-                                  {claim.approvals.map((approver, idx) => (
-                                    <div key={idx} className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center border-2 border-white shadow-md">
-                                      <Check size={16} color="white" />
-                                    </div>
-                                  ))}
-                                </div>
-                                <span className="text-slate-700 font-bold">
-                                  {claim.approvals.length}/{claim.reviewers.length}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
+<p class=MsoNormal>&lt;/head&gt;</p>
 
-              {showCommentModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-                  <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 border border-slate-200">
-                    <h2 className="text-2xl font-bold text-slate-800 mb-4">Rejection Reason</h2>
-                    <p className="text-slate-600 mb-5">Please provide a detailed reason for rejecting this claim:</p>
-                    <textarea
-                      value={comment}
-                      onChange={(e) => setComment(e.target.value)}
-                      className="w-full border-2 border-slate-200 rounded-xl p-4 h-36 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-all"
-                      placeholder="Enter your comments and feedback..."
-                    />
-                    <div className="flex space-x-3 mt-6">
-                      <button
-                        onClick={submitRejection}
-                        className="flex-1 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white font-bold py-3 rounded-xl transition-all shadow-lg"
-                      >
-                        Submit Rejection
-                      </button>
-                      <button
-                        onClick={() => {
-                          setShowCommentModal(false);
-                          setComment('');
-                        }}
-                        className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 rounded-xl transition-all"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        };
+<p class=MsoNormal>&lt;body&gt;</p>
 
-        ReactDOM.render(<ClaimsApprovalPrototype />, document.getElementById('root'));
-    </script>
+<p class=MsoNormal>&lt;header&gt;</p>
+
+<p class=MsoNormal>  &lt;h1&gt;Accuray Marketing Claims Approval
+Tool&lt;/h1&gt;</p>
+
+<p class=MsoNormal>  &lt;nav&gt;</p>
+
+<p class=MsoNormal>    &lt;button
+onclick=&quot;showSection('home')&quot;&gt;Home&lt;/button&gt;</p>
+
+<p class=MsoNormal>    &lt;button
+onclick=&quot;showSection('repository')&quot;&gt;Approved Claims
+Repo&lt;/button&gt;</p>
+
+<p class=MsoNormal>  &lt;/nav&gt;</p>
+
+<p class=MsoNormal>&lt;/header&gt;</p>
+
+<p class=MsoNormal>&lt;main&gt;</p>
+
+<p class=MsoNormal>  &lt;section id=&quot;home&quot;&gt;</p>
+
+<p class=MsoNormal>    &lt;h2&gt;Approver Homepage&lt;/h2&gt;</p>
+
+<p class=MsoNormal>    &lt;label for=&quot;roleSelect&quot;&gt;Select Your
+Role:&amp;nbsp;&lt;/label&gt;</p>
+
+<p class=MsoNormal>    &lt;select id=&quot;roleSelect&quot;
+onchange=&quot;loadPendingClaims()&quot;&gt;</p>
+
+<p class=MsoNormal>      &lt;option
+value=&quot;product&quot;&gt;Product&lt;/option&gt;</p>
+
+<p class=MsoNormal>      &lt;option
+value=&quot;regulatory&quot;&gt;Regulatory&lt;/option&gt;</p>
+
+<p class=MsoNormal>      &lt;option
+value=&quot;clinical&quot;&gt;Clinical&lt;/option&gt;</p>
+
+<p class=MsoNormal>      &lt;option
+value=&quot;engineering&quot;&gt;Engineering&lt;/option&gt;</p>
+
+<p class=MsoNormal>    &lt;/select&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    &lt;h3&gt;Pending Claims for Approval&lt;/h3&gt;</p>
+
+<p class=MsoNormal>    &lt;table id=&quot;pendingClaimsTable&quot;
+aria-label=&quot;Pending claims for approval&quot;&gt;</p>
+
+<p class=MsoNormal>      &lt;thead&gt;</p>
+
+<p class=MsoNormal>        &lt;tr&gt;</p>
+
+<p class=MsoNormal>         
+&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Theme&lt;/th&gt;&lt;th&gt;Offering&lt;/th&gt;&lt;th&gt;Type&lt;/th&gt;&lt;th&gt;Claim
+Snippet&lt;/th&gt;&lt;th&gt;Action&lt;/th&gt;</p>
+
+<p class=MsoNormal>        &lt;/tr&gt;</p>
+
+<p class=MsoNormal>      &lt;/thead&gt;</p>
+
+<p class=MsoNormal>      &lt;tbody&gt;</p>
+
+<p class=MsoNormal>      &lt;/tbody&gt;</p>
+
+<p class=MsoNormal>    &lt;/table&gt;</p>
+
+<p class=MsoNormal>  &lt;/section&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  &lt;section id=&quot;claimReview&quot;
+class=&quot;hidden&quot;&gt;</p>
+
+<p class=MsoNormal>    &lt;button
+onclick=&quot;showSection('home')&quot;&gt;Back to Home&lt;/button&gt;</p>
+
+<p class=MsoNormal>    &lt;h2&gt;Claim Review&lt;/h2&gt;</p>
+
+<p class=MsoNormal>    &lt;div&gt;</p>
+
+<p class=MsoNormal>      &lt;p&gt;&lt;strong&gt;Theme:&lt;/strong&gt; &lt;span
+id=&quot;claimTheme&quot;&gt;&lt;/span&gt;&lt;/p&gt;</p>
+
+<p class=MsoNormal>      &lt;p&gt;&lt;strong&gt;Offering:&lt;/strong&gt;
+&lt;span id=&quot;claimOffering&quot;&gt;&lt;/span&gt;&lt;/p&gt;</p>
+
+<p class=MsoNormal>      &lt;p&gt;&lt;strong&gt;Type:&lt;/strong&gt; &lt;span
+id=&quot;claimType&quot;&gt;&lt;/span&gt;&lt;/p&gt;</p>
+
+<p class=MsoNormal>      &lt;p&gt;&lt;strong&gt;Claim
+Text:&lt;/strong&gt;&lt;/p&gt;</p>
+
+<p class=MsoNormal>      &lt;p id=&quot;claimText&quot;
+style=&quot;background:#e9ecef; padding:10px;
+border-radius:4px;&quot;&gt;&lt;/p&gt;</p>
+
+<p class=MsoNormal>    &lt;/div&gt;</p>
+
+<p class=MsoNormal>    &lt;button class=&quot;btn-approve&quot;
+onclick=&quot;approveClaim()&quot;&gt;Approve&lt;/button&gt;</p>
+
+<p class=MsoNormal>    &lt;button class=&quot;btn-reject&quot;
+onclick=&quot;rejectClaim()&quot;&gt;Reject&lt;/button&gt;</p>
+
+<p class=MsoNormal>  &lt;/section&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  &lt;section id=&quot;repository&quot;
+class=&quot;hidden&quot;&gt;</p>
+
+<p class=MsoNormal>    &lt;button
+onclick=&quot;showSection('home')&quot;&gt;Back to Home&lt;/button&gt;</p>
+
+<p class=MsoNormal>    &lt;h2&gt;Approved Claims Repository&lt;/h2&gt;</p>
+
+<p class=MsoNormal>    &lt;table id=&quot;approvedClaimsTable&quot;
+aria-label=&quot;Approved marketing claims repository&quot;&gt;</p>
+
+<p class=MsoNormal>      &lt;thead&gt;</p>
+
+<p class=MsoNormal>        &lt;tr&gt;</p>
+
+<p class=MsoNormal>         
+&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Theme&lt;/th&gt;&lt;th&gt;Offering&lt;/th&gt;&lt;th&gt;Type&lt;/th&gt;&lt;th&gt;Claim
+Text&lt;/th&gt;</p>
+
+<p class=MsoNormal>        &lt;/tr&gt;</p>
+
+<p class=MsoNormal>      &lt;/thead&gt;</p>
+
+<p class=MsoNormal>      &lt;tbody&gt;</p>
+
+<p class=MsoNormal>      &lt;/tbody&gt;</p>
+
+<p class=MsoNormal>    &lt;/table&gt;</p>
+
+<p class=MsoNormal>  &lt;/section&gt;</p>
+
+<p class=MsoNormal>&lt;/main&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>&lt;script&gt;</p>
+
+<p class=MsoNormal>  const claimsData = [</p>
+
+<p class=MsoNormal>    {</p>
+
+<p class=MsoNormal>      id: 1,</p>
+
+<p class=MsoNormal>      theme: &quot;Product&quot;,</p>
+
+<p class=MsoNormal>      offering: &quot;Synchrony&quot;,</p>
+
+<p class=MsoNormal>      type: &quot;Competitive&quot;,</p>
+
+<p class=MsoNormal>      claim: &quot;Synchrony is the only technology that
+uses image guidance to automatically adapt and synchronize the radiation beam
+to the position.&quot;</p>
+
+<p class=MsoNormal>    },</p>
+
+<p class=MsoNormal>    {</p>
+
+<p class=MsoNormal>      id: 2,</p>
+
+<p class=MsoNormal>      theme: &quot;Software&quot;,</p>
+
+<p class=MsoNormal>      offering: &quot;Precision&quot;,</p>
+
+<p class=MsoNormal>      type: &quot;Clinical&quot;,</p>
+
+<p class=MsoNormal>      claim: &quot;Deliver more personalized and more
+precise treatment plans for more patients.&quot;</p>
+
+<p class=MsoNormal>    },</p>
+
+<p class=MsoNormal>    {</p>
+
+<p class=MsoNormal>      id: 3,</p>
+
+<p class=MsoNormal>      theme: &quot;Software&quot;,</p>
+
+<p class=MsoNormal>      offering: &quot;ClearRT&quot;,</p>
+
+<p class=MsoNormal>      type: &quot;Competitive&quot;,</p>
+
+<p class=MsoNormal>      claim: &quot;ClearRT avoids the distortions caused by
+MR imaging and the artifacts associated with conventional cone beam CT by using
+hardware.&quot;</p>
+
+<p class=MsoNormal>    },</p>
+
+<p class=MsoNormal>    {</p>
+
+<p class=MsoNormal>      id: 4,</p>
+
+<p class=MsoNormal>      theme: &quot;Software&quot;,</p>
+
+<p class=MsoNormal>      offering: &quot;ClearRT&quot;,</p>
+
+<p class=MsoNormal>      type: &quot;Technological&quot;,</p>
+
+<p class=MsoNormal>      claim: &quot;It’s able to image a meter in a minute,
+it provides clinicians the industry’s longest continuous scan length, up to 135
+cm, for fast and accurate assessment.&quot;</p>
+
+<p class=MsoNormal>    },</p>
+
+<p class=MsoNormal>    {</p>
+
+<p class=MsoNormal>      id: 5,</p>
+
+<p class=MsoNormal>      theme: &quot;Software&quot;,</p>
+
+<p class=MsoNormal>      offering: &quot;ClearRT&quot;,</p>
+
+<p class=MsoNormal>      type: &quot;Competitive&quot;,</p>
+
+<p class=MsoNormal>      claim: &quot;The industry leading image quality and
+anatomical accuracy produced by ClearRT allows clinicians to quickly and
+confidently setup treatment.&quot;</p>
+
+<p class=MsoNormal>    }</p>
+
+<p class=MsoNormal>  ];</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  let approvedClaims = [];</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  function showSection(sectionId) {</p>
+
+<p class=MsoNormal>    document.querySelectorAll('main &gt;
+section').forEach(section =&gt; {</p>
+
+<p class=MsoNormal>      section.classList.add('hidden');</p>
+
+<p class=MsoNormal>    });</p>
+
+<p class=MsoNormal>   
+document.getElementById(sectionId).classList.remove('hidden');</p>
+
+<p class=MsoNormal>  }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  function loadPendingClaims() {</p>
+
+<p class=MsoNormal>    const role =
+document.getElementById('roleSelect').value;</p>
+
+<p class=MsoNormal>    const tbody =
+document.querySelector('#pendingClaimsTable tbody');</p>
+
+<p class=MsoNormal>    tbody.innerHTML = '';</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    const filtered = claimsData.filter(claim =&gt;</p>
+
+<p class=MsoNormal>      (role === &quot;product&quot; &amp;&amp;
+claim.theme.toLowerCase() === &quot;product&quot;) ||</p>
+
+<p class=MsoNormal>      (role === &quot;regulatory&quot; &amp;&amp;
+(claim.type.toLowerCase() === &quot;competitive&quot; ||
+claim.type.toLowerCase() === &quot;technological&quot;)) ||</p>
+
+<p class=MsoNormal>      (role === &quot;clinical&quot; &amp;&amp;
+claim.type.toLowerCase() === &quot;clinical&quot;) ||</p>
+
+<p class=MsoNormal>      (role === &quot;engineering&quot; &amp;&amp;
+claim.theme.toLowerCase() === &quot;software&quot;)</p>
+
+<p class=MsoNormal>    );</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    filtered.forEach((claim, index) =&gt; {</p>
+
+<p class=MsoNormal>      const tr = document.createElement('tr');</p>
+
+<p class=MsoNormal>      tr.innerHTML = `</p>
+
+<p class=MsoNormal>        &lt;td&gt;${index + 1}&lt;/td&gt;</p>
+
+<p class=MsoNormal>        &lt;td&gt;${claim.theme}&lt;/td&gt;</p>
+
+<p class=MsoNormal>        &lt;td&gt;${claim.offering}&lt;/td&gt;</p>
+
+<p class=MsoNormal>        &lt;td&gt;${claim.type}&lt;/td&gt;</p>
+
+<p class=MsoNormal>        &lt;td&gt;${claim.claim.substring(0,
+50)}...&lt;/td&gt;</p>
+
+<p class=MsoNormal>        &lt;td&gt;&lt;button
+onclick=&quot;reviewClaim(${claim.id})&quot;&gt;Review&lt;/button&gt;&lt;/td&gt;</p>
+
+<p class=MsoNormal>      `;</p>
+
+<p class=MsoNormal>      tbody.appendChild(tr);</p>
+
+<p class=MsoNormal>    });</p>
+
+<p class=MsoNormal>  }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  function reviewClaim(id) {</p>
+
+<p class=MsoNormal>    const claim = claimsData.find(c =&gt; c.id === id);</p>
+
+<p class=MsoNormal>    if (!claim) return;</p>
+
+<p class=MsoNormal>    document.getElementById('claimTheme').textContent =
+claim.theme;</p>
+
+<p class=MsoNormal>    document.getElementById('claimOffering').textContent =
+claim.offering;</p>
+
+<p class=MsoNormal>    document.getElementById('claimType').textContent =
+claim.type;</p>
+
+<p class=MsoNormal>    document.getElementById('claimText').textContent =
+claim.claim;</p>
+
+<p class=MsoNormal>    showSection('claimReview');</p>
+
+<p class=MsoNormal>    currentReviewClaimId = id;</p>
+
+<p class=MsoNormal>  }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  let currentReviewClaimId = null;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  function approveClaim() {</p>
+
+<p class=MsoNormal>    if (currentReviewClaimId == null) return alert('No claim
+selected for approval.');</p>
+
+<p class=MsoNormal>    const claim = claimsData.find(c =&gt; c.id ===
+currentReviewClaimId);</p>
+
+<p class=MsoNormal>    approvedClaims.push(claim);</p>
+
+<p class=MsoNormal>    alert('Claim approved!');</p>
+
+<p class=MsoNormal>    showSection('home');</p>
+
+<p class=MsoNormal>    currentReviewClaimId = null;</p>
+
+<p class=MsoNormal>    loadPendingClaims();</p>
+
+<p class=MsoNormal>    loadApprovedClaims();</p>
+
+<p class=MsoNormal>  }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  function rejectClaim() {</p>
+
+<p class=MsoNormal>    if (currentReviewClaimId == null) return alert('No claim
+selected for rejection.');</p>
+
+<p class=MsoNormal>    alert('Claim rejected.');</p>
+
+<p class=MsoNormal>    showSection('home');</p>
+
+<p class=MsoNormal>    currentReviewClaimId = null;</p>
+
+<p class=MsoNormal>    loadPendingClaims();</p>
+
+<p class=MsoNormal>  }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  function loadApprovedClaims() {</p>
+
+<p class=MsoNormal>    const tbody =
+document.querySelector('#approvedClaimsTable tbody');</p>
+
+<p class=MsoNormal>    tbody.innerHTML = '';</p>
+
+<p class=MsoNormal>    approvedClaims.forEach((claim, index) =&gt; {</p>
+
+<p class=MsoNormal>      const tr = document.createElement('tr');</p>
+
+<p class=MsoNormal>      tr.innerHTML = `</p>
+
+<p class=MsoNormal>        &lt;td&gt;${index + 1}&lt;/td&gt;</p>
+
+<p class=MsoNormal>        &lt;td&gt;${claim.theme}&lt;/td&gt;</p>
+
+<p class=MsoNormal>        &lt;td&gt;${claim.offering}&lt;/td&gt;</p>
+
+<p class=MsoNormal>        &lt;td&gt;${claim.type}&lt;/td&gt;</p>
+
+<p class=MsoNormal>        &lt;td&gt;${claim.claim}&lt;/td&gt;</p>
+
+<p class=MsoNormal>      `;</p>
+
+<p class=MsoNormal>      tbody.appendChild(tr);</p>
+
+<p class=MsoNormal>    });</p>
+
+<p class=MsoNormal>  }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>  // Initialize</p>
+
+<p class=MsoNormal>  loadPendingClaims();</p>
+
+<p class=MsoNormal>&lt;/script&gt;</p>
+
+<p class=MsoNormal>&lt;/body&gt;</p>
+
+<p class=MsoNormal>&lt;/html&gt;</p>
+
+</div>
+
 </body>
+
 </html>
-                
