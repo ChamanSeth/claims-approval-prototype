@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accuray Claims Approval System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="module">
+        import React, { useState } from 'https://esm.sh/react@18';
+        import ReactDOM from 'https://esm.sh/react-dom@18/client';
+        import * as LucideIcons from 'https://esm.sh/lucide-react@0.263.1';
+
+        const { ChevronRight, Search, Check, X, FileText, Clock, CheckCircle, XCircle, AlertCircle, Home, Database, Users, Bell, LogOut } = LucideIcons;
+
+        function App() {
+          const [page, setPage] = useState('login');
+          const [role, setRole] = useState('');
+          const [claim, setClaim] = useState(null);
+          const [search, setSearch] = useState('');
+          const [filter, setFilter] = useState('all');
+          const [modal, setModal] = useState(false);
+          const [comment, setComment] = useState('');
+          const [claims, setClaims] = useState([
+            {id:'CLM-001',title:'Synchrony Image Guidance Technology',description:'Synchrony is the only technology that uses image guidance to automatically adapt and synchronize the radiation beam to the position of the tumor in real-time.',submittedBy:'Sarah Johnson',submissionDate:'2025-10-15',type:'Competitive',theme:'Product',offering:'Synchrony',status:'pending',reviewers:['Product','Clinical','Regulatory','Legal'],currentReviewer:'Product',approvals:[],rejections:[],comments:[]},
+            {id:'CLM-002',title:'ClearRT Precision Treatment',description:'Deliver more personalized and more precise treatment plans for more patients.',submittedBy:'Michael Chen',submissionDate:'2025-10-18',type:'Clinical',theme:'Software',offering:'Precision',status:'pending',reviewers:['Product','Clinical','Engineering'],currentReviewer:'Clinical',approvals:['Product'],rejections:[],comments:[]},
+            {id:'CLM-003',title:'ClearRT MR Imaging Integration',description:'ClearRT avoids the distortion caused by MR imaging and the artifacts associated with conventional cone beam CT by using hardware-based image reconstruction.',submittedBy:'Emily Rodriguez',submissionDate:'2025-10-20',type:'Competitive',theme:'Software',offering:'ClearRT',status:'approved',reviewers:['Product','Clinical','Regulatory','Engineering'],currentReviewer:null,approvals:['Product','Clinical','Regulatory','Engineering'],rejections:[],comments:[]},
+            {id:'CLM-004',title:'ClearRT Treatment Time Efficiency',description:'It takes an image reconstruction in minutes and the industry-leading image quality means clinicians can more confidently proceed with treatment.',submittedBy:'David Park',submissionDate:'2025-10-22',type:'Technological',theme:'Software',offering:'ClearRT',status:'rejected',reviewers:['Product','Clinical','Regulatory'],currentReviewer:null,approvals:['Product'],rejections:['Clinical'],comments:[{reviewer:'Clinical',text:'Need specific time metrics and clinical validation data',date:'2025-10-25'}]},
+            {id:'CLM-005',title:'ClearRT Anatomical Accuracy',description:'The industry leading image quality and anatomical accuracy produced by ClearRT allows clinicians to quickly and confidently proceed with treatment.',submittedBy:'Lisa Wang',submissionDate:'2025-10-24',type:'Competitive',theme:'Software',offering:'ClearRT',status:'under_review',reviewers:['Product','Clinical','Regulatory','Engineering'],currentReviewer:'Regulatory',approvals:['Product','Clinical'],rejections:[],comments:[]}
+          ]);
+
+          const roles = ['Product','Clinical','Regulatory','Engineering','Legal'];
+
+          const filtered = claims.filter(c => {
+            const match = c.title.toLowerCase().includes(search.toLowerCase()) || c.description.toLowerCase().includes(search.toLowerCase());
+            const filt = filter === 'all' || c.status === filter;
+            const pending = page === 'dashboard' ? (c.currentReviewer === role && c.status !== 'approved' && c.status !== 'rejected') : true;
+            return match && filt && (page === 'repository' || pending);
+          });
+
+          const approve = (id) => {
+            setClaims(claims.map(c => {
+              if (c.id === id) {
+                const newApp = [...c.approvals, role];
+                const remaining = c.reviewers.filter(r => !newApp.includes(r));
+                return {...c, approvals:newApp, currentReviewer:remaining.length>0?remaining[0]:null, status:remaining.length===0?'approved':'under_review'};
+              }
+              return c;
+            }));
+            setClaim(null);
+          };
+
+          const reject = () => {
+            if (claim) {
+              setClaims(claims.map(c => c.id === claim.id ? {...c, rejections:[...c.rejections,role], status:'rejected', comments:[...c.comments,{reviewer:role,text:comment,date:new Date().toISOString().split('T')[0]}]} : c));
+            }
+            setModal(false);
+            setComment('');
+            setClaim(null);
+          };
+
+          const statusColor = (s) => s==='approved'?'bg-emerald-100 text-emerald-700 border border-emerald-200':s==='rejected'?'bg-rose-100 text-rose-700 border border-rose-200':s==='under_review'?'bg-blue-100 text-blue-700 border border-blue-200':'bg-amber-100 text-amber-700 border border-amber-200';
+          
+          const statusIcon = (s) => {
+            const p = {className:"w-4 h-4"};
+            return s==='approved'?React.createElement(CheckCircle,p):s==='rejected'?React.createElement(XCircle,p):s==='under_review'?React.createElement(Clock,p):React.createElement(AlertCircle,p);
+          };
+
+          if (page === 'login') {
+            return React.createElement('div',{className:"min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4"},
+              React.createElement('div',{className:"bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full border border-slate-200"},
+                React.createElement('div',{className:"text-center mb-8"},
+                  React.createElement('div',{className:"bg-gradient-to-br from-blue-600 to-blue-800 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg"},
+                    React.createElement(FileText,{className:"w-10 h-10 text-white"})
+                  ),
+                  React.createElement('h1',{className:"text-3xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent mb-3"},'Accuray Claims Portal'),
+                  React.createElement('p',{className:"text-slate-600 text-lg"},'Product Claims Matrix Approval'),
+                  React.createElement('div',{className:"mt-4 pt-4 border-t border-slate-200"},
+                    React.createElement('p',{className:"text-sm text-slate-500"},'Select your department to continue')
+                  )
+                ),
+                React.createElement('div',{className:"space-y-3"},
+                  roles.map(r=>React.createElement('button',{key:r,onClick:()=>{setRole(r);setPage('dashboard')},className:"w-full bg-white border-2 border-slate-200 hover:border-blue-500 hover:bg-blue-50 rounded-xl p-4 flex items-center justify-between transition-all group shadow-sm hover:shadow-md"},
+                    React.createElement('span',{className:"text-slate-700 font-semibold group-hover:text-blue-700"},r+' Team'),
+                    React.createElement(ChevronRight,{className:"w-5 h-5 text-slate-400 group-hover:text-blue-600"})
+                  ))
+                ),
+                React.createElement('div',{className:"mt-8 pt-6 border-t border-slate-200 text-center"},
+                  React.createElement('p',{className:"text-xs text-slate-500"},'© 2025 Accuray Incorporated - Confidential')
+                )
+              )
+            );
+          }
+
+          return React.createElement('div',{className:"min-h-screen bg-slate-50 flex"},
+            React.createElement('div',{className:"w-72 bg-gradient-to-b from-slate-800 to-slate-900 text-white flex flex-col shadow-2xl"},
+              React.createElement('div',{className:"p-6 border-b border-slate-700"},
+                React.createElement('div',{className:"flex items-center space-x-3 mb-4"},
+                  React.createElement('div',{className:"bg-gradient-to-br from-blue-500 to-blue-700 p-3 rounded-xl shadow-lg"},
+                    React.createElement(FileText,{className:"w-7 h-7"})
+                  ),
+                  React.createElement('div',{},
+                    React.createElement('h2',{className:"font-bold text-xl"},'Accuray'),
+                    React.createElement('p',{className:"text-slate-400 text-sm"},'Claims Portal')
+                  )
+                ),
+                React.createElement('div',{className:"bg-slate-700/50 rounded-lg p-3 mt-4"},
+                  React.createElement('p',{className:"text-xs text-slate-400 mb-1"},'Logged in as'),
+                  React.createElement('p',{className:"text-white font-semibold"},role+' Team')
+                )
+              ),
+              React.createElement('nav',{className:"flex-1 p-4 space-y-2"},
+                React.createElement('button',{onClick:()=>setPage('dashboard'),className:"w-full flex items-center space-x-3 p-3 rounded-xl transition-all "+(page==='dashboard'?'bg-blue-600 shadow-lg':'hover:bg-slate-700')},
+                  React.createElement(Home,{className:"w-5 h-5"}),
+                  React.createElement('span',{className:"font-medium"},'Pending Approvals'),
+                  filtered.length>0&&page==='dashboard'&&React.createElement('span',{className:"ml-auto bg-rose-500 text-white text-xs rounded-full px-2.5 py-1 font-semibold"},filtered.length)
+                ),
+                React.createElement('button',{onClick:()=>setPage('repository'),className:"w-full flex items-center space-x-3 p-3 rounded-xl transition-all "+(page==='repository'?'bg-blue-600 shadow-lg':'hover:bg-slate-700')},
+                  React.createElement(Database,{className:"w-5 h-5"}),
+                  React.createElement('span',{className:"font-medium"},'Claims Repository')
+                )
+              ),
+              React.createElement('div',{className:"p-4 border-t border-slate-700"},
+                React.createElement('button',{onClick:()=>setPage('login'),className:"w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-slate-700 transition-all"},
+                  React.createElement(LogOut,{className:"w-5 h-5"}),
+                  React.createElement('span',{className:"font-medium"},'Logout')
+                ),
+                React.createElement('div',{className:"mt-4 text-center"},
+                  React.createElement('p',{className:"text-xs text-slate-500"},'Accuray Confidential')
+                )
+              )
+            ),
+            React.createElement('div',{className:"flex-1 flex flex-col"},
+              React.createElement('header',{className:"bg-white border-b border-slate-200 shadow-sm"},
+                React.createElement('div',{className:"p-6"},
+                  React.createElement('div',{className:"flex items-center justify-between"},
+                    React.createElement('div',{},
+                      React.createElement('h1',{className:"text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent"},page==='dashboard'?'Pending Approvals':'Claims Repository'),
+                      React.createElement('p',{className:"text-slate-600 mt-2 text-lg"},page==='dashboard'?`Claims awaiting your review as ${role} team member`:'All approved and archived claims')
+                    ),
+                    React.createElement('div',{className:"flex items-center space-x-4"},
+                      React.createElement('button',{className:"relative p-3 hover:bg-slate-100 rounded-xl transition-colors"},
+                        React.createElement(Bell,{className:"w-6 h-6 text-slate-600"}),
+                        React.createElement('span',{className:"absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"})
+                      )
+                    )
+                  )
+                )
+              ),
+              React.createElement('div',{className:"bg-white border-b border-slate-200 p-6 shadow-sm"},
+                React.createElement('div',{className:"flex space-x-4"},
+                  React.createElement('div',{className:"flex-1 relative"},
+                    React.createElement(Search,{className:"absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5"}),
+                    React.createElement('input',{type:"text",placeholder:"Search claims...",value:search,onChange:e=>setSearch(e.target.value),className:"w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"})
+                  ),
+                  React.createElement('select',{value:filter,onChange:e=>setFilter(e.target.value),className:"px-5 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 font-medium text-slate-700"},
+                    React.createElement('option',{value:"all"},'All Status'),
+                    React.createElement('option',{value:"pending"},'Pending'),
+                    React.createElement('option',{value:"under_review"},'Under Review'),
+                    React.createElement('option',{value:"approved"},'Approved'),
+                    React.createElement('option',{value:"rejected"},'Rejected')
+                  )
+                )
+              ),
+              React.createElement('div',{className:"flex-1 overflow-auto p-6"},
+                claim?React.createElement('div',{className:"bg-white rounded-2xl shadow-xl max-w-5xl mx-auto border border-slate-200"},
+                  React.createElement('div',{className:"p-8 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white"},
+                    React.createElement('button',{onClick:()=>setClaim(null),className:"text-blue-600 hover:text-blue-700 mb-6 flex items-center font-medium"},
+                      React.createElement(ChevronRight,{className:"w-5 h-5 rotate-180"}),
+                      React.createElement('span',{className:"ml-2"},'Back to list')
+                    ),
+                    React.createElement('div',{className:"flex items-start justify-between"},
+                      React.createElement('div',{},
+                        React.createElement('div',{className:"flex items-center space-x-4 mb-3"},
+                          React.createElement('h2',{className:"text-3xl font-bold text-slate-800"},claim.title),
+                          React.createElement('span',{className:"px-4 py-2 rounded-xl text-sm font-semibold flex items-center space-x-2 "+statusColor(claim.status)},
+                            statusIcon(claim.status),
+                            React.createElement('span',{className:"ml-1 capitalize"},claim.status.replace('_',' '))
+                          )
+                        ),
+                        React.createElement('p',{className:"text-slate-600 font-medium"},'Claim ID: '+claim.id)
+                      )
+                    )
+                  ),
+                  React.createElement('div',{className:"p-8 space-y-8"},
+                    React.createElement('div',{},
+                      React.createElement('h3',{className:"font-bold text-slate-800 mb-3 text-lg"},'Description'),
+                      React.createElement('p',{className:"text-slate-700 leading-relaxed text-lg bg-slate-50 p-4 rounded-xl border border-slate-200"},claim.description)
+                    ),
+                    claim.currentReviewer===role&&claim.status!=='approved'&&claim.status!=='rejected'&&React.createElement('div',{className:"flex space-x-4 pt-6 border-t border-slate-200"},
+                      React.createElement('button',{onClick:()=>approve(claim.id),className:"flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-4 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-lg"},
+                        React.createElement(Check,{className:"w-6 h-6"}),
+                        React.createElement('span',{},'Approve Claim')
+                      ),
+                      React.createElement('button',{onClick:()=>setModal(true),className:"flex-1 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white font-bold py-4 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-lg"},
+                        React.createElement(X,{className:"w-6 h-6"}),
+                        React.createElement('span',{},'Reject Claim')
+                      )
+                    )
+                  )
+                ):React.createElement('div',{className:"grid gap-5"},
+                  filtered.length===0?React.createElement('div',{className:"text-center py-16 bg-white rounded-2xl shadow-sm border border-slate-200"},
+                    React.createElement(FileText,{className:"w-20 h-20 text-slate-300 mx-auto mb-6"}),
+                    React.createElement('h3',{className:"text-2xl font-bold text-slate-700 mb-3"},'No claims found'),
+                    React.createElement('p',{className:"text-slate-500 text-lg"},page==='dashboard'?'You have no pending claims to review.':'No claims match your criteria.')
+                  ):filtered.map(c=>React.createElement('div',{key:c.id,onClick:()=>setClaim(c),className:"bg-white rounded-2xl shadow-md hover:shadow-xl transition-all cursor-pointer p-6 border-2 border-slate-200 hover:border-blue-400"},
+                    React.createElement('div',{className:"flex items-start justify-between mb-5"},
+                      React.createElement('div',{className:"flex-1"},
+                        React.createElement('h3',{className:"text-xl font-bold text-slate-800 mb-3"},c.title),
+                        React.createElement('p',{className:"text-slate-600 line-clamp-2"},c.description)
+                      ),
+                      React.createElement('span',{className:"px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 ml-4 "+statusColor(c.status)},
+                        statusIcon(c.status),
+                        React.createElement('span',{className:"ml-1 capitalize"},c.status.replace('_',' '))
+                      )
+                    ),
+                    React.createElement('div',{className:"flex items-center justify-between"},
+                      React.createElement('div',{className:"flex items-center space-x-5 text-sm text-slate-600"},
+                        React.createElement('span',{className:"flex items-center font-medium"},
+                          React.createElement(Users,{className:"w-4 h-4 mr-2"}),
+                          c.submittedBy
+                        ),
+                        React.createElement('span',{className:"bg-blue-100 text-blue-700 px-3 py-1 rounded-lg font-semibold border border-blue-200"},c.offering)
+                      ),
+                      React.createElement('span',{className:"text-slate-700 font-bold"},c.approvals.length+'/'+c.reviewers.length)
+                    )
+                  ))
+                )
+              )
+            ),
+            modal&&React.createElement('div',{className:"fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50"},
+              React.createElement('div',{className:"bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8"},
+                React.createElement('h2',{className:"text-2xl font-bold text-slate-800 mb-4"},'Rejection Reason'),
+                React.createElement('textarea',{value:comment,onChange:e=>setComment(e.target.value),className:"w-full border-2 border-slate-200 rounded-xl p-4 h-36",placeholder:"Enter your comments..."}),
+                React.createElement('div',{className:"flex space-x-3 mt-6"},
+                  React.createElement('button',{onClick:reject,className:"flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-xl"},'Submit Rejection'),
+                  React.createElement('button',{onClick:()=>{setModal(false);setComment('')},className:"flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 rounded-xl"},'Cancel')
+                )
+              )
+            )
+          );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+    </script>
+</body>
+</html>
