@@ -1,612 +1,1407 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accuray Claims Approval System</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; }
-        
-        /* Login Page */
-        .login-container { min-height: 100vh; background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 50%, #f1f5f9 100%); display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-box { background: white; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); padding: 50px; max-width: 450px; width: 100%; border: 1px solid #e2e8f0; }
-        .logo-box { background: linear-gradient(135deg, #2563eb, #1e40af); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; box-shadow: 0 10px 30px rgba(37,99,235,0.3); }
-        .logo-icon { width: 40px; height: 40px; stroke: white; fill: none; }
-        .login-title { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #1e40af, #1e3a8a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 15px; }
-        .login-subtitle { color: #64748b; font-size: 18px; text-align: center; margin-bottom: 20px; }
-        .login-divider { border-top: 1px solid #e2e8f0; margin: 20px 0; }
-        .login-instruction { color: #94a3b8; font-size: 14px; text-align: center; }
-        .role-btn { width: 100%; background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 18px; margin: 12px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .role-btn:hover { border-color: #3b82f6; background: #eff6ff; box-shadow: 0 4px 12px rgba(59,130,246,0.2); }
-        .role-btn span { color: #334155; font-weight: 600; font-size: 16px; }
-        .role-btn:hover span { color: #1e40af; }
-        .role-btn svg { stroke: #94a3b8; transition: all 0.3s; stroke-width: 2; width: 20px; height: 20px; }
-        .role-btn:hover svg { stroke: #3b82f6; }
-        .login-footer { text-align: center; margin-top: 30px; padding-top: 25px; border-top: 1px solid #e2e8f0; color: #94a3b8; font-size: 12px; }
-        
-        /* Main Dashboard */
-        .dashboard { display: none; min-height: 100vh; }
-        .dashboard.active { display: flex; }
-        
-        /* Sidebar */
-        .sidebar { width: 288px; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); color: white; display: flex; flex-direction: column; box-shadow: 4px 0 30px rgba(0,0,0,0.3); }
-        .sidebar-header { padding: 24px; border-bottom: 1px solid #334155; }
-        .sidebar-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .sidebar-logo { background: linear-gradient(135deg, #3b82f6, #1e40af); padding: 12px; border-radius: 16px; box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
-        .sidebar-logo svg { width: 28px; height: 28px; stroke: white; }
-        .sidebar-brand-text h2 { font-size: 20px; font-weight: 700; }
-        .sidebar-brand-text p { font-size: 13px; color: #94a3b8; }
-        .user-info { background: rgba(51,65,85,0.5); padding: 12px; border-radius: 12px; }
-        .user-info p:first-child { font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
-        .user-info p:last-child { font-weight: 600; }
-        .sidebar-nav { flex: 1; padding: 16px; }
-        .nav-btn { width: 100%; padding: 14px 16px; border: none; background: transparent; color: white; border-radius: 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; margin: 8px 0; transition: all 0.3s; font-size: 15px; font-weight: 500; position: relative; }
-        .nav-btn:hover { background: #334155; }
-        .nav-btn.active { background: #3b82f6; box-shadow: 0 8px 24px rgba(59,130,246,0.5); }
-        .nav-btn svg { width: 20px; height: 20px; }
-        .badge { position: absolute; right: 12px; background: #ef4444; color: white; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 700; box-shadow: 0 2px 8px rgba(239,68,68,0.4); }
-        .sidebar-footer { padding: 16px; border-top: 1px solid #334155; }
-        .logout-btn { width: 100%; padding: 14px; border: none; background: transparent; color: white; border-radius: 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.3s; font-size: 15px; font-weight: 500; }
-        .logout-btn:hover { background: #334155; }
-        .sidebar-footer-text { text-align: center; margin-top: 16px; font-size: 11px; color: #64748b; }
-        
-        /* Main Content */
-        .main-content { flex: 1; display: flex; flex-direction: column; background: #f8fafc; }
-        .header { background: white; border-bottom: 1px solid #e2e8f0; padding: 24px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-        .header-content { display: flex; justify-content: space-between; align-items: center; }
-        .header-title h1 { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #1e293b, #475569); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
-        .header-title p { color: #64748b; font-size: 18px; }
-        .header-actions { display: flex; gap: 16px; align-items: center; }
-        .bell-btn { position: relative; padding: 12px; background: transparent; border: none; border-radius: 16px; cursor: pointer; transition: all 0.3s; }
-        .bell-btn:hover { background: #f1f5f9; }
-        .bell-btn svg { width: 24px; height: 24px; stroke: #64748b; }
-        .notification-dot { position: absolute; top: 8px; right: 8px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid white; }
-        
-        /* Search Bar */
-        .search-bar { background: white; border-bottom: 1px solid #e2e8f0; padding: 24px 32px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .search-controls { display: flex; gap: 16px; }
-        .search-input-wrapper { flex: 1; position: relative; }
-        .search-input-wrapper svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; stroke: #94a3b8; }
-        .search-input { width: 100%; padding: 14px 16px 14px 48px; border: 2px solid #e2e8f0; border-radius: 16px; font-size: 15px; transition: all 0.3s; }
-        .search-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
-        .filter-select { padding: 14px 20px; border: 2px solid #e2e8f0; border-radius: 16px; font-size: 15px; font-weight: 500; color: #334155; cursor: pointer; transition: all 0.3s; background: white; }
-        .filter-select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
-        
-        /* Content Area */
-        .content-area { flex: 1; overflow-y: auto; padding: 32px; }
-        .claims-grid { display: grid; gap: 24px; }
-        
-        /* Claim Card */
-        .claim-card { background: white; border-radius: 24px; padding: 28px; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
-        .claim-card:hover { border-color: #3b82f6; box-shadow: 0 8px 32px rgba(59,130,246,0.15); transform: translateY(-2px); }
-        .claim-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .claim-info { flex: 1; }
-        .claim-info h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 12px; }
-        .claim-info p { color: #64748b; line-height: 1.6; }
-        .status-badge { padding: 10px 16px; border-radius: 16px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-        .status-pending { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-        .status-approved { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-        .status-rejected { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-        .status-under_review { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
-        .claim-footer { display: flex; justify-content: space-between; align-items: center; }
-        .claim-meta { display: flex; gap: 24px; color: #64748b; font-size: 14px; font-weight: 500; }
-        .meta-item { display: flex; align-items: center; gap: 8px; }
-        .meta-item svg { width: 16px; height: 16px; }
-        .offering-tag { background: #dbeafe; color: #1e40af; padding: 6px 14px; border-radius: 12px; font-weight: 600; border: 1px solid #bfdbfe; }
-        .progress { display: flex; align-items: center; gap: 12px; }
-        .approval-dots { display: flex; gap: -8px; }
-        .approval-dot { width: 32px; height: 32px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 8px rgba(16,185,129,0.3); margin-left: -8px; }
-        .approval-dot:first-child { margin-left: 0; }
-        .approval-dot svg { width: 16px; height: 16px; stroke: white; }
-        .progress-text { font-weight: 700; color: #334155; }
-        
-        /* Empty State */
-        .empty-state { text-align: center; padding: 80px 40px; background: white; border-radius: 24px; border: 2px solid #e2e8f0; }
-        .empty-state svg { width: 80px; height: 80px; stroke: #cbd5e1; margin: 0 auto 24px; }
-        .empty-state h3 { font-size: 24px; font-weight: 700; color: #334155; margin-bottom: 12px; }
-        .empty-state p { color: #64748b; font-size: 18px; }
-        
-        /* Detail View */
-        .detail-view { max-width: 1200px; margin: 0 auto; background: white; border-radius: 24px; border: 2px solid #e2e8f0; box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
-        .detail-header { padding: 40px; border-bottom: 1px solid #e2e8f0; background: linear-gradient(135deg, #f8fafc 0%, white 100%); border-radius: 24px 24px 0 0; }
-        .back-btn { background: transparent; border: none; color: #3b82f6; font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 24px; padding: 8px; border-radius: 8px; transition: all 0.3s; }
-        .back-btn:hover { background: #eff6ff; }
-        .back-btn svg { width: 20px; height: 20px; }
-        .detail-title-row { display: flex; justify-content: space-between; align-items: flex-start; }
-        .detail-title h2 { font-size: 32px; font-weight: 700; color: #1e293b; margin-bottom: 12px; }
-        .detail-title p { color: #64748b; font-weight: 500; }
-        .detail-body { padding: 40px; }
-        .detail-section { margin-bottom: 40px; }
-        .detail-section h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 16px; }
-        .description-box { background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; color: #334155; font-size: 18px; line-height: 1.7; }
-        .metadata-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-        .metadata-card { background: #f8fafc; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; }
-        .metadata-card h3 { font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 16px; }
-        .metadata-row { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; font-size: 14px; }
-        .metadata-row span:first-child { color: #64748b; }
-        .metadata-row span:last-child { font-weight: 600; color: #1e293b; background: white; padding: 6px 12px; border-radius: 8px; }
-        .action-buttons { display: flex; gap: 16px; padding-top: 24px; border-top: 1px solid #e2e8f0; }
-        .approve-btn, .reject-btn { flex: 1; padding: 18px; border: none; border-radius: 16px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
-        .approve-btn { background: linear-gradient(135deg, #10b981, #059669); color: white; }
-        .approve-btn:hover { background: linear-gradient(135deg, #059669, #047857); box-shadow: 0 8px 24px rgba(16,185,129,0.3); }
-        .reject-btn { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
-        .reject-btn:hover { background: linear-gradient(135deg, #dc2626, #b91c1c); box-shadow: 0 8px 24px rgba(239,68,68,0.3); }
-        .approve-btn svg, .reject-btn svg { width: 24px; height: 24px; }
-        
-        /* Modal */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-overlay.active { display: flex; }
-        .modal { background: white; border-radius: 24px; padding: 40px; max-width: 600px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); border: 1px solid #e2e8f0; }
-        .modal h2 { font-size: 28px; font-weight: 700; color: #1e293b; margin-bottom: 16px; }
-        .modal p { color: #64748b; margin-bottom: 24px; font-size: 16px; }
-        .modal textarea { width: 100%; padding: 16px; border: 2px solid #e2e8f0; border-radius: 16px; font-size: 15px; font-family: inherit; resize: vertical; min-height: 150px; transition: all 0.3s; }
-        .modal textarea:focus { outline: none; border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.1); }
-        .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
-        .modal-btn { flex: 1; padding: 16px; border: none; border-radius: 16px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s; }
-        .modal-submit { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; box-shadow: 0 4px 16px rgba(239,68,68,0.2); }
-        .modal-submit:hover { background: linear-gradient(135deg, #dc2626, #b91c1c); box-shadow: 0 6px 20px rgba(239,68,68,0.3); }
-        .modal-cancel { background: #e2e8f0; color: #1e293b; }
-        .modal-cancel:hover { background: #cbd5e1; }
-        
-        .hidden { display: none; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Accuray Claims Approval Tool – Prototype</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --primary: #00c1e0; /* Accuray teal */
+      --primary-dark: #0096af;
+      --bg: #f5f7fa;
+      --card-bg: #ffffff;
+      --border: #dde3ec;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --warning: #f59e0b;
+      --radius-lg: 12px;
+      --radius-sm: 6px;
+      --shadow-soft: 0 4px 12px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    header .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    header .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    header .brand-subtitle {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    header .user-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .pill-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.9;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      font-size: 14px;
+      outline: none;
+      transition: border 0.15s ease, box-shadow 0.15s ease;
+      background: #fff;
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(0, 193, 224, 0.3);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .user-panel input[type="text"],
+    .user-panel select {
+      width: auto;
+      min-width: 140px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    main {
+      flex: 1;
+      padding: 16px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto 24px;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      border: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .tab-btn.active {
+      background: #e0f9fe;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    .tab-badge {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--primary-dark);
+    }
+
+    .layout-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .layout-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 16px 18px;
+      border: 1px solid rgba(148, 163, 184, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #e5f3ff;
+      color: #1d4ed8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+
+    .field {
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+    }
+
+    .field-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-muted);
+    }
+
+    .btn-row {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease, transform 0.05s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 193, 224, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 193, 224, 0.4);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4338ca;
+    }
+
+    .chip-outline {
+      background: transparent;
+      border: 1px dashed #cbd5f5;
+      color: #4b5563;
+    }
+
+    /* Dashboard metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .metrics-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .metric-card {
+      padding: 10px 12px;
+      border-radius: var(--radius-lg);
+      background: #f9fafb;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .metric-pill {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+    }
+
+    .metric-pill.success {
+      background: rgba(22, 163, 74, 0.08);
+      color: var(--success);
+    }
+
+    .metric-pill.warning {
+      background: rgba(245, 158, 11, 0.08);
+      color: var(--warning);
+    }
+
+    /* Simple bar chart */
+    .chart {
+      margin-top: 10px;
+    }
+
+    .chart-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .chart-label {
+      width: 80px;
+      text-align: right;
+    }
+
+    .chart-bar-track {
+      flex: 1;
+      height: 7px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .chart-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .chart-value {
+      width: 24px;
+      text-align: left;
+      font-size: 11px;
+    }
+
+    /* Approver pipeline table */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    .table th,
+    .table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    .table th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      background: #f9fafb;
+    }
+
+    .status-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-pending {
+      background: rgba(245, 158, 11, 0.08);
+      color: var(--warning);
+    }
+
+    .status-inreview {
+      background: rgba(37, 99, 235, 0.08);
+      color: #2563eb;
+    }
+
+    .status-approved {
+      background: rgba(22, 163, 74, 0.08);
+      color: var(--success);
+    }
+
+    .status-rejected {
+      background: rgba(220, 38, 38, 0.08);
+      color: var(--danger);
+    }
+
+    .status-stage-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .action-btn {
+      font-size: 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    /* Repository filters */
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .filters-row input[type="text"],
+    .filters-row select {
+      min-width: 130px;
+      font-size: 12px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: #ecfeff;
+      color: #0e7490;
+      border: 1px solid #bae6fd;
+    }
+
+    .tag.soft {
+      background: #eef2ff;
+      color: #4338ca;
+      border-color: #c7d2fe;
+    }
+
+    .empty-state {
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 12px;
+      border-radius: var(--radius-lg);
+      background: #f9fafb;
+      border: 1px dashed #d1d5db;
+      text-align: center;
+    }
+
+    .note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+  </style>
 </head>
 <body>
-    <!-- Login Page -->
-    <div id="loginPage" class="login-container">
-        <div class="login-box">
-            <div class="logo-box">
-                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-            </div>
-            <h1 class="login-title">Accuray Claims Portal</h1>
-            <p class="login-subtitle">Product Claims Matrix Approval</p>
-            <div class="login-divider"></div>
-            <p class="login-instruction">Select your department to continue</p>
-            
-            <div id="roleButtons"></div>
-            
-            <div class="login-footer">© 2025 Accuray Incorporated - Confidential</div>
+  <div class="app-shell">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">A</div>
+        <div>
+          <div>Accuray Claims Approval Tool</div>
+          <div class="brand-subtitle">
+            Prototype – Internal use only
+          </div>
         </div>
-    </div>
+      </div>
+      <div class="user-panel">
+        <div>
+          <div class="pill-label">Logged in as</div>
+          <input
+            type="text"
+            id="userNameInput"
+            placeholder="Your name"
+            value="Demo User"
+          />
+        </div>
+        <div>
+          <div class="pill-label">Role</div>
+          <select id="roleSelect">
+            <option value="submitter">Submitter</option>
+            <option value="product">Product Approver</option>
+            <option value="system">System Dept Approver</option>
+            <option value="marketing">Marketing</option>
+            <option value="ra">Regulatory Affairs</option>
+            <option value="legal">Legal</option>
+          </select>
+        </div>
+      </div>
+    </header>
 
-    <!-- Dashboard -->
-    <div id="dashboard" class="dashboard">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-brand">
-                    <div class="sidebar-logo">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                    </div>
-                    <div class="sidebar-brand-text">
-                        <h2>Accuray</h2>
-                        <p>Claims Portal</p>
-                    </div>
+    <main>
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="submit">
+          Submit Claim
+        </button>
+        <button class="tab-btn" data-tab="dashboard">
+          Approver Dashboard
+          <span class="tab-badge" id="pendingCountBadge">3</span>
+        </button>
+        <button class="tab-btn" data-tab="repository">
+          Claims Repository
+        </button>
+      </div>
+
+      <!-- SUBMIT CLAIM VIEW -->
+      <section id="tab-submit">
+        <div class="layout-grid">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">New Claim Request</div>
+                <div class="card-subtitle">
+                  Any Accuray employee can submit a claim for review.
                 </div>
-                <div class="user-info">
-                    <p>Logged in as</p>
-                    <p id="userRole"></p>
+              </div>
+              <span class="badge">Step 1 – Submission</span>
+            </div>
+
+            <div class="field">
+              <label>Requester name</label>
+              <input
+                type="text"
+                id="fieldRequester"
+                placeholder="Your full name"
+              />
+            </div>
+
+            <div class="field">
+              <label>Broad claim theme</label>
+              <select id="fieldTheme">
+                <option value="">Select theme</option>
+                <option value="Product">Product-related claim</option>
+                <option value="Software">Software-related claim</option>
+                <option value="Service">Service-related claim</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Specific offering</label>
+              <select id="fieldOffering">
+                <option value="">Select offering</option>
+                <option value="CyberKnife S7">CyberKnife® S7™</option>
+                <option value="Radixact">Radixact®</option>
+                <option value="Accuray Helix">Accuray Helix™</option>
+                <option value="Accuray Stellar">Accuray Stellar™</option>
+                <option value="Other">Other / Not listed</option>
+              </select>
+              <div class="field-hint">
+                Example: CyberKnife® S7™, Radixact®, Helix™, Stellar™, etc.
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Claim text</label>
+              <textarea
+                id="fieldClaimText"
+                placeholder="Write the exact claim sentence or paragraph you want to use."
+              ></textarea>
+            </div>
+
+            <div class="field">
+              <label>Supporting evidence (description)</label>
+              <textarea
+                id="fieldEvidence"
+                placeholder="Describe or reference clinical data, technical records, or internal documents. (File upload placeholder)"
+              ></textarea>
+              <div class="field-hint">
+                In a full build, this would include actual file upload.
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Intended audience</label>
+              <select id="fieldAudience">
+                <option value="">Select audience</option>
+                <option value="Clinicians / Radiation Oncologists">
+                  Clinicians / Radiation Oncologists
+                </option>
+                <option value="Hospital Administrators">
+                  Hospital Administrators
+                </option>
+                <option value="Patients / Public">Patients / Public</option>
+                <option value="Internal staff">Internal staff</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Intended collateral type</label>
+              <select id="fieldCollateral">
+                <option value="">Select collateral type</option>
+                <option value="Customer presentation">
+                  Customer presentation
+                </option>
+                <option value="Brochure / PDF">Brochure / PDF</option>
+                <option value="Social media">Social media</option>
+                <option value="Website copy">Website copy</option>
+                <option value="Internal communication">
+                  Internal communication
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Additional notes (optional)</label>
+              <textarea
+                id="fieldNotes"
+                placeholder="Anything else approvers should know?"
+              ></textarea>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-primary" id="btnSubmitClaim">
+                Submit claim for approval
+              </button>
+              <button class="btn btn-ghost" id="btnClearForm">
+                Clear form
+              </button>
+            </div>
+
+            <div class="note" id="submitNote">
+              This prototype stores claims in memory only (no real backend).
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Workflow Snapshot</div>
+                <div class="card-subtitle">
+                  Your claim will follow this staged approval path.
                 </div>
+              </div>
             </div>
-            
-            <div class="sidebar-nav">
-                <button class="nav-btn active" onclick="showPage('dashboard')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                    </svg>
-                    <span>Pending Approvals</span>
-                    <span id="pendingBadge" class="badge hidden"></span>
-                </button>
-                <button class="nav-btn" onclick="showPage('repository')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
-                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-                    </svg>
-                    <span>Claims Repository</span>
-                </button>
+
+            <div class="section-title">Approval stages</div>
+            <ol style="font-size:13px; color:var(--text-muted); padding-left:18px;">
+              <li>Product Team – initial validation.</li>
+              <li>
+                System Department – Engineering / Clinical / Software / Service.
+              </li>
+              <li>Marketing – rephrasing & messaging alignment.</li>
+              <li>Regulatory Affairs – regulatory compliance.</li>
+              <li>Legal – final legal approval.</li>
+            </ol>
+
+            <div class="section-title">Context tag concept</div>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">
+              Approvers will attach a <strong>context tag</strong> specifying
+              where the claim can be used (e.g., “Customer presentations only”,
+              “Social media allowed”, “Internal use only”).
+            </p>
+
+            <div class="chip-row">
+              <span class="chip">Customer presentations</span>
+              <span class="chip">Social media</span>
+              <span class="chip">Rad oncologists only</span>
+              <span class="chip chip-outline">Internal only</span>
             </div>
-            
-            <div class="sidebar-footer">
-                <button class="logout-btn" onclick="logout()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                    <span>Logout</span>
-                </button>
-                <div class="sidebar-footer-text">Accuray Confidential</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APPROVER DASHBOARD VIEW -->
+      <section id="tab-dashboard" style="display:none;">
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Approver Dashboard</div>
+              <div class="card-subtitle">
+                High-level overview of your pending workload and flow by stage.
+              </div>
             </div>
+            <span class="badge" id="roleBadge">Role: Product Approver</span>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-label">Pending in your queue</div>
+              <div class="metric-value">
+                <span id="metricPending">3</span>
+                <span class="metric-pill warning">action needed</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Approved this month</div>
+              <div class="metric-value">
+                <span id="metricApproved">5</span>
+                <span class="metric-pill success">processed</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Rejected / returned</div>
+              <div class="metric-value">
+                <span id="metricRejected">1</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Avg. days in stage</div>
+              <div class="metric-value">
+                <span id="metricAvgDays">2.4</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart">
+            <div class="section-title">Pipeline by stage</div>
+
+            <div class="chart-row">
+              <div class="chart-label">Product</div>
+              <div class="chart-bar-track">
+                <div
+                  class="chart-bar"
+                  id="barProduct"
+                  style="width: 60%;"
+                ></div>
+              </div>
+              <div class="chart-value" id="valProduct">3</div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label">System</div>
+              <div class="chart-bar-track">
+                <div
+                  class="chart-bar"
+                  id="barSystem"
+                  style="width: 40%;"
+                ></div>
+              </div>
+              <div class="chart-value" id="valSystem">2</div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label">Marketing</div>
+              <div class="chart-bar-track">
+                <div
+                  class="chart-bar"
+                  id="barMarketing"
+                  style="width: 30%;"
+                ></div>
+              </div>
+              <div class="chart-value" id="valMarketing">1</div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label">RA / Legal</div>
+              <div class="chart-bar-track">
+                <div
+                  class="chart-bar"
+                  id="barRALegal"
+                  style="width: 20%;"
+                ></div>
+              </div>
+              <div class="chart-value" id="valRALegal">1</div>
+            </div>
+          </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <div class="header-content">
-                    <div class="header-title">
-                        <h1 id="pageTitle">Pending Approvals</h1>
-                        <p id="pageSubtitle"></p>
-                    </div>
-                    <div class="header-actions">
-                        <button class="bell-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                            </svg>
-                            <span class="notification-dot"></span>
-                        </button>
-                    </div>
-                </div>
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Your approval pipeline</div>
+              <div class="card-subtitle">
+                Claims currently waiting at your stage.
+              </div>
             </div>
-            
-            <div class="search-bar">
-                <div class="search-controls">
-                    <div class="search-input-wrapper">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <input type="text" id="searchInput" class="search-input" placeholder="Search claims by title or description..." oninput="filterClaims()">
-                    </div>
-                    <select id="statusFilter" class="filter-select" onchange="filterClaims()">
-                        <option value="all">All Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="under_review">Under Review</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="content-area">
-                <div id="claimsList" class="claims-grid"></div>
-                <div id="claimDetail" class="hidden"></div>
-            </div>
+          </div>
+
+          <table class="table" id="approverTable">
+            <thead>
+              <tr>
+                <th>Claim ID</th>
+                <th>Offering</th>
+                <th>Stage</th>
+                <th>Requester</th>
+                <th>Context tag</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows are populated by JS -->
+            </tbody>
+          </table>
+
+          <div class="note">
+            This is a static prototype. Buttons don’t yet persist changes to a
+            backend – they only simulate status changes in the browser.
+          </div>
         </div>
-    </div>
+      </section>
 
-    <!-- Rejection Modal -->
-    <div id="rejectionModal" class="modal-overlay">
-        <div class="modal">
-            <h2>Rejection Reason</h2>
-            <p>Please provide a detailed reason for rejecting this claim:</p>
-            <textarea id="rejectionComment" placeholder="Enter your comments and feedback..."></textarea>
-            <div class="modal-actions">
-                <button class="modal-btn modal-submit" onclick="submitRejection()">Submit Rejection</button>
-                <button class="modal-btn modal-cancel" onclick="closeModal()">Cancel</button>
+      <!-- CLAIMS REPOSITORY VIEW -->
+      <section id="tab-repository" style="display:none;">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Claims Repository</div>
+              <div class="card-subtitle">
+                View approved and in-review claims with filters and context
+                tags.
+              </div>
             </div>
+          </div>
+
+          <div class="filters-row">
+            <input
+              type="text"
+              id="filterSearch"
+              placeholder="Search by keyword..."
+            />
+            <select id="filterOffering">
+              <option value="">Offering (all)</option>
+            </select>
+            <select id="filterStatus">
+              <option value="">Status (all)</option>
+              <option value="Approved">Approved</option>
+              <option value="Pending">Pending</option>
+              <option value="In Review">In Review</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+            <select id="filterTheme">
+              <option value="">Theme (all)</option>
+              <option value="Product">Product</option>
+              <option value="Software">Software</option>
+              <option value="Service">Service</option>
+            </select>
+          </div>
+
+          <table class="table" id="repoTable">
+            <thead>
+              <tr>
+                <th>Claim ID</th>
+                <th>Claim</th>
+                <th>Offering</th>
+                <th>Theme</th>
+                <th>Status</th>
+                <th>Context tag</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Filled via JS -->
+            </tbody>
+          </table>
+
+          <div class="empty-state" id="repoEmpty" style="display:none;">
+            No claims match the current filters. Try clearing them or submitting
+            a new claim.
+          </div>
+
+          <div class="note">
+            Future enhancements: export to CSV / PDF, advanced filters,
+            integration with master control document system.
+          </div>
         </div>
-    </div>
+      </section>
+    </main>
+  </div>
 
-    <script>
-        // Sample claims data
-        let claims = [
-            {id:'CLM-001',title:'Synchrony Image Guidance Technology',description:'Synchrony is the only technology that uses image guidance to automatically adapt and synchronize the radiation beam to the position of the tumor in real-time.',submittedBy:'Sarah Johnson',submissionDate:'2025-10-15',type:'Competitive',theme:'Product',offering:'Synchrony',status:'pending',reviewers:['Product','Clinical','Regulatory','Legal'],currentReviewer:'Product',approvals:[],rejections:[],comments:[]},
-            {id:'CLM-002',title:'ClearRT Precision Treatment',description:'Deliver more personalized and more precise treatment plans for more patients.',submittedBy:'Michael Chen',submissionDate:'2025-10-18',type:'Clinical',theme:'Software',offering:'Precision',status:'pending',reviewers:['Product','Clinical','Engineering'],currentReviewer:'Clinical',approvals:['Product'],rejections:[],comments:[]},
-            {id:'CLM-003',title:'ClearRT MR Imaging Integration',description:'ClearRT avoids the distortion caused by MR imaging and the artifacts associated with conventional cone beam CT by using hardware-based image reconstruction.',submittedBy:'Emily Rodriguez',submissionDate:'2025-10-20',type:'Competitive',theme:'Software',offering:'ClearRT',status:'approved',reviewers:['Product','Clinical','Regulatory','Engineering'],currentReviewer:null,approvals:['Product','Clinical','Regulatory','Engineering'],rejections:[],comments:[]},
-            {id:'CLM-004',title:'ClearRT Treatment Time Efficiency',description:'It takes an image reconstruction in minutes and the industry-leading image quality means clinicians can more confidently proceed with treatment.',submittedBy:'David Park',submissionDate:'2025-10-22',type:'Technological',theme:'Software',offering:'ClearRT',status:'rejected',reviewers:['Product','Clinical','Regulatory'],currentReviewer:null,approvals:['Product'],rejections:['Clinical'],comments:[{reviewer:'Clinical',text:'Need specific time metrics and clinical validation data',date:'2025-10-25'}]},
-            {id:'CLM-005',title:'ClearRT Anatomical Accuracy',description:'The industry leading image quality and anatomical accuracy produced by ClearRT allows clinicians to quickly and confidently proceed with treatment.',submittedBy:'Lisa Wang',submissionDate:'2025-10-24',type:'Competitive',theme:'Software',offering:'ClearRT',status:'under_review',reviewers:['Product','Clinical','Regulatory','Engineering'],currentReviewer:'Regulatory',approvals:['Product','Clinical'],rejections:[],comments:[]}
-        ];
+  <script>
+    // -----------------------------
+    // Simple in-browser data model
+    // -----------------------------
+    let claims = [
+      {
+        id: "CLM-001",
+        requester: "Alex Chen",
+        theme: "Product",
+        offering: "CyberKnife S7",
+        claimText:
+          "CyberKnife S7 enables highly precise stereotactic treatments in fewer sessions.",
+        status: "Pending",
+        stage: "Product",
+        contextTag: "Customer presentations only",
+      },
+      {
+        id: "CLM-002",
+        requester: "Maria Lopez",
+        theme: "Software",
+        offering: "Radixact",
+        claimText:
+          "Radixact planning software streamlines workflows across the RT department.",
+        status: "In Review",
+        stage: "System",
+        contextTag: "Internal staff & admin",
+      },
+      {
+        id: "CLM-003",
+        requester: "Demo User",
+        theme: "Service",
+        offering: "Accuray Stellar",
+        claimText:
+          "Accuray Stellar service program helps maintain uptime and treatment confidence.",
+        status: "Approved",
+        stage: "Legal",
+        contextTag: "Website & brochures",
+      },
+    ];
 
-        const roles = ['Product', 'Clinical', 'Regulatory', 'Engineering', 'Legal'];
-        let currentUser = '';
-        let currentPage = 'dashboard';
-        let selectedClaim = null;
+    // Populate offering filter options dynamically
+    function refreshOfferingFilter() {
+      const offerings = Array.from(new Set(claims.map((c) => c.offering)));
+      const filterOffering = document.getElementById("filterOffering");
+      filterOffering.innerHTML = '<option value="">Offering (all)</option>';
+      offerings.forEach((o) => {
+        const opt = document.createElement("option");
+        opt.value = o;
+        opt.textContent = o;
+        filterOffering.appendChild(opt);
+      });
+    }
 
-        // Initialize role buttons
-        function initRoleButtons() {
-            const container = document.getElementById('roleButtons');
-            roles.forEach(role => {
-                const btn = document.createElement('button');
-                btn.className = 'role-btn';
-                btn.innerHTML = `
-                    <span>${role} Team</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                `;
-                btn.onclick = () => login(role);
-                container.appendChild(btn);
-            });
+    // -----------------------------
+    // Tabs handling
+    // -----------------------------
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const tabSections = {
+      submit: document.getElementById("tab-submit"),
+      dashboard: document.getElementById("tab-dashboard"),
+      repository: document.getElementById("tab-repository"),
+    };
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+
+        tabButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        Object.entries(tabSections).forEach(([key, section]) => {
+          section.style.display = key === tab ? "block" : "none";
+        });
+
+        if (tab === "dashboard") {
+          renderApproverView();
+        } else if (tab === "repository") {
+          renderRepository();
         }
+      });
+    });
 
-        function login(role) {
-            currentUser = role;
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('dashboard').classList.add('active');
-            document.getElementById('userRole').textContent = role + ' Team';
-            renderClaims();
+    // -----------------------------
+    // Role handling (for dashboard)
+    // -----------------------------
+    const roleSelect = document.getElementById("roleSelect");
+    const roleBadge = document.getElementById("roleBadge");
+
+    function getRoleLabel(role) {
+      switch (role) {
+        case "submitter":
+          return "Submitter";
+        case "product":
+          return "Product Approver";
+        case "system":
+          return "System Dept Approver";
+        case "marketing":
+          return "Marketing";
+        case "ra":
+          return "Regulatory Affairs";
+        case "legal":
+          return "Legal";
+        default:
+          return role;
+      }
+    }
+
+    roleSelect.addEventListener("change", () => {
+      roleBadge.textContent = "Role: " + getRoleLabel(roleSelect.value);
+      renderApproverView();
+    });
+
+    // -----------------------------
+    // Submit form behaviour
+    // -----------------------------
+    const requesterInput = document.getElementById("fieldRequester");
+    const userNameInput = document.getElementById("userNameInput");
+
+    // Sync header user into requester field when focusing
+    requesterInput.addEventListener("focus", () => {
+      if (!requesterInput.value && userNameInput.value) {
+        requesterInput.value = userNameInput.value;
+      }
+    });
+
+    document.getElementById("btnClearForm").addEventListener("click", () => {
+      [
+        "fieldRequester",
+        "fieldTheme",
+        "fieldOffering",
+        "fieldClaimText",
+        "fieldEvidence",
+        "fieldAudience",
+        "fieldCollateral",
+        "fieldNotes",
+      ].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el.tagName === "SELECT") el.value = "";
+        else el.value = "";
+      });
+    });
+
+    document.getElementById("btnSubmitClaim").addEventListener("click", () => {
+      const requester = requesterInput.value.trim() || "Unknown requester";
+      const theme =
+        document.getElementById("fieldTheme").value || "Product";
+      const offering =
+        document.getElementById("fieldOffering").value || "Other";
+      const claimText =
+        document.getElementById("fieldClaimText").value.trim() ||
+        "No claim text provided.";
+      const newId = "CLM-" + String(claims.length + 1).padStart(3, "0");
+
+      const newClaim = {
+        id: newId,
+        requester,
+        theme,
+        offering,
+        claimText,
+        status: "Pending",
+        stage: "Product", // first stage
+        contextTag: "TBD – context to be set by approvers",
+      };
+
+      claims.unshift(newClaim); // add to top
+      refreshOfferingFilter();
+      renderApproverView();
+      renderRepository();
+
+      const submitNote = document.getElementById("submitNote");
+      submitNote.textContent =
+        "Claim " +
+        newId +
+        " submitted and added to the Product queue in this prototype.";
+    });
+
+    // -----------------------------
+    // Approver dashboard + pipeline
+    // -----------------------------
+    function renderApproverView() {
+      const role = roleSelect.value;
+      const stageMap = {
+        product: "Product",
+        system: "System",
+        marketing: "Marketing",
+        ra: "RA",
+        legal: "Legal",
+      };
+
+      const myStage = stageMap[role];
+
+      // Filter claims for "my" stage
+      const myClaims =
+        myStage !== undefined
+          ? claims.filter((c) => c.stage === myStage && c.status !== "Approved")
+          : [];
+
+      // Basic metrics
+      document.getElementById("metricPending").textContent = myClaims.length;
+
+      const approvedCount = claims.filter(
+        (c) => c.status === "Approved"
+      ).length;
+      const rejectedCount = claims.filter(
+        (c) => c.status === "Rejected"
+      ).length;
+
+      document.getElementById("metricApproved").textContent = approvedCount;
+      document.getElementById("metricRejected").textContent = rejectedCount;
+
+      // Dummy average days
+      document.getElementById("metricAvgDays").textContent = (
+        1.8 +
+        Math.min(myClaims.length, 4) * 0.3
+      ).toFixed(1);
+
+      // Simple bar widths based on counts
+      const productCount = claims.filter((c) => c.stage === "Product").length;
+      const systemCount = claims.filter((c) => c.stage === "System").length;
+      const marketingCount = claims.filter(
+        (c) => c.stage === "Marketing"
+      ).length;
+      const raLegalCount = claims.filter(
+        (c) => c.stage === "RA" || c.stage === "Legal"
+      ).length;
+
+      function widthFor(n) {
+        const max = Math.max(
+          1,
+          productCount,
+          systemCount,
+          marketingCount,
+          raLegalCount
+        );
+        return ((n / max) * 100).toFixed(0) + "%";
+      }
+
+      document.getElementById("barProduct").style.width =
+        widthFor(productCount);
+      document.getElementById("barSystem").style.width =
+        widthFor(systemCount);
+      document.getElementById("barMarketing").style.width =
+        widthFor(marketingCount);
+      document.getElementById("barRALegal").style.width =
+        widthFor(raLegalCount);
+
+      document.getElementById("valProduct").textContent = productCount;
+      document.getElementById("valSystem").textContent = systemCount;
+      document.getElementById("valMarketing").textContent = marketingCount;
+      document.getElementById("valRALegal").textContent = raLegalCount;
+
+      // Update tab badge for pending count
+      document.getElementById("pendingCountBadge").textContent =
+        myClaims.length;
+
+      // Populate pipeline table
+      const tbody = document.querySelector("#approverTable tbody");
+      tbody.innerHTML = "";
+
+      if (!myStage) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 6;
+        td.textContent =
+          "Switch to an approver role (Product, System, Marketing, RA, Legal) to see a pipeline.";
+        td.style.color = "#6b7280";
+        td.style.fontSize = "13px";
+        tbody.appendChild(tr);
+        tr.appendChild(td);
+        return;
+      }
+
+      if (myClaims.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 6;
+        td.textContent = "No claims currently pending at your stage.";
+        td.style.color = "#6b7280";
+        td.style.fontSize = "13px";
+        tbody.appendChild(tr);
+        tr.appendChild(td);
+        return;
+      }
+
+      myClaims.forEach((c) => {
+        const tr = document.createElement("tr");
+
+        const tdId = document.createElement("td");
+        tdId.textContent = c.id;
+
+        const tdOff = document.createElement("td");
+        tdOff.textContent = c.offering;
+
+        const tdStage = document.createElement("td");
+        const stageSpan = document.createElement("span");
+        stageSpan.className = "status-pill status-inreview";
+        const dot = document.createElement("span");
+        dot.className = "status-stage-dot";
+        stageSpan.appendChild(dot);
+        const txt = document.createTextNode(" " + c.stage);
+        stageSpan.appendChild(txt);
+        tdStage.appendChild(stageSpan);
+
+        const tdReq = document.createElement("td");
+        tdReq.textContent = c.requester;
+
+        const tdContext = document.createElement("td");
+        const tag = document.createElement("span");
+        tag.className = "tag soft";
+        tag.textContent = c.contextTag;
+        tdContext.appendChild(tag);
+
+        const tdActions = document.createElement("td");
+        const actionRow = document.createElement("div");
+        actionRow.className = "action-row";
+
+        const approveBtn = document.createElement("button");
+        approveBtn.className = "action-btn";
+        approveBtn.textContent = "Approve";
+        approveBtn.addEventListener("click", () =>
+          advanceClaim(c.id, "approve", myStage)
+        );
+
+        const rejectBtn = document.createElement("button");
+        rejectBtn.className = "action-btn";
+        rejectBtn.textContent = "Reject";
+        rejectBtn.addEventListener("click", () =>
+          advanceClaim(c.id, "reject", myStage)
+        );
+
+        const editBtn = document.createElement("button");
+        editBtn.className = "action-btn";
+        editBtn.textContent = "Request info";
+        editBtn.addEventListener("click", () =>
+          advanceClaim(c.id, "request", myStage)
+        );
+
+        actionRow.appendChild(approveBtn);
+        actionRow.appendChild(rejectBtn);
+        actionRow.appendChild(editBtn);
+        tdActions.appendChild(actionRow);
+
+        tr.appendChild(tdId);
+        tr.appendChild(tdOff);
+        tr.appendChild(tdStage);
+        tr.appendChild(tdReq);
+        tr.appendChild(tdContext);
+        tr.appendChild(tdActions);
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function advanceClaim(id, action, stage) {
+      const idx = claims.findIndex((c) => c.id === id);
+      if (idx === -1) return;
+      const claim = claims[idx];
+
+      if (action === "reject") {
+        claim.status = "Rejected";
+      } else if (action === "request") {
+        claim.status = "In Review";
+      } else if (action === "approve") {
+        // Move to next stage or final approve
+        if (stage === "Product") claim.stage = "System";
+        else if (stage === "System") claim.stage = "Marketing";
+        else if (stage === "Marketing") claim.stage = "RA";
+        else if (stage === "RA") claim.stage = "Legal";
+        else if (stage === "Legal") {
+          claim.status = "Approved";
         }
+      }
 
-        function logout() {
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('dashboard').classList.remove('active');
-            currentUser = '';
-            selectedClaim = null;
+      renderApproverView();
+      renderRepository();
+    }
+
+    // -----------------------------
+    // Repository rendering + filters
+    // -----------------------------
+    function renderRepository() {
+      const search = document
+        .getElementById("filterSearch")
+        .value.toLowerCase();
+      const status = document.getElementById("filterStatus").value;
+      const theme = document.getElementById("filterTheme").value;
+      const offering = document.getElementById("filterOffering").value;
+
+      const tbody = document.querySelector("#repoTable tbody");
+      const empty = document.getElementById("repoEmpty");
+
+      let filtered = claims.filter((c) => {
+        if (status && c.status !== status) return false;
+        if (theme && c.theme !== theme) return false;
+        if (offering && c.offering !== offering) return false;
+
+        if (search) {
+          const text =
+            (c.id + " " + c.claimText + " " + c.contextTag).toLowerCase();
+          if (!text.includes(search)) return false;
         }
+        return true;
+      });
 
-        function showPage(page) {
-            currentPage = page;
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.nav-btn').classList.add('active');
-            
-            if (page === 'dashboard') {
-                document.getElementById('pageTitle').textContent = 'Pending Approvals';
-                document.getElementById('pageSubtitle').textContent = `Claims awaiting your review as ${currentUser} team member`;
-            } else {
-                document.getElementById('pageTitle').textContent = 'Claims Repository';
-                document.getElementById('pageSubtitle').textContent = 'All approved and archived claims';
-            }
-            
-            selectedClaim = null;
-            renderClaims();
-        }
+      tbody.innerHTML = "";
 
-        function getFilteredClaims() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const status = document.getElementById('statusFilter').value;
-            
-            return claims.filter(claim => {
-                const matchesSearch = claim.title.toLowerCase().includes(search) || 
-                                    claim.description.toLowerCase().includes(search);
-                const matchesStatus = status === 'all' || claim.status === status;
-                const isPending = currentPage === 'dashboard' ? 
-                    (claim.currentReviewer === currentUser && claim.status !== 'approved' && claim.status !== 'rejected') : true;
-                
-                return matchesSearch && matchesStatus && (currentPage === 'repository' || isPending);
-            });
-        }
+      if (filtered.length === 0) {
+        empty.style.display = "block";
+        return;
+      } else {
+        empty.style.display = "none";
+      }
 
-        function filterClaims() {
-            renderClaims();
-        }
+      filtered.forEach((c) => {
+        const tr = document.createElement("tr");
 
-        function renderClaims() {
-            const filtered = getFilteredClaims();
-            const listContainer = document.getElementById('claimsList');
-            const detailContainer = document.getElementById('claimDetail');
-            
-            // Update badge
-            const badge = document.getElementById('pendingBadge');
-            const pendingCount = claims.filter(c => c.currentReviewer === currentUser && c.status !== 'approved' && c.status !== 'rejected').length;
-            if (pendingCount > 0 && currentPage === 'dashboard') {
-                badge.textContent = pendingCount;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-            
-            if (selectedClaim) {
-                listContainer.classList.add('hidden');
-                detailContainer.classList.remove('hidden');
-                renderClaimDetail();
-                return;
-            }
-            
-            listContainer.classList.remove('hidden');
-            detailContainer.classList.add('hidden');
-            
-            if (filtered.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="empty-state">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        <h3>No claims found</h3>
-                        <p>${currentPage === 'dashboard' ? 'You have no pending claims to review at this time.' : 'No claims match your search criteria.'}</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            listContainer.innerHTML = filtered.map(claim => `
-                <div class="claim-card" onclick="viewClaim('${claim.id}')">
-                    <div class="claim-header">
-                        <div class="claim-info">
-                            <h3>${claim.title}</h3>
-                            <p>${claim.description}</p>
-                        </div>
-                        <div class="status-badge status-${claim.status}">
-                            ${getStatusIcon(claim.status)}
-                            <span>${claim.status.replace('_', ' ')}</span>
-                        </div>
-                    </div>
-                    <div class="claim-footer">
-                        <div class="claim-meta">
-                            <div class="meta-item">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                </svg>
-                                <span>${claim.submittedBy}</span>
-                            </div>
-                            <div class="meta-item">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                                <span>${claim.submissionDate}</span>
-                            </div>
-                            <span class="offering-tag">${claim.offering}</span>
-                        </div>
-                        <div class="progress">
-                            <div class="approval-dots">
-                                ${claim.approvals.map(() => `
-                                    <div class="approval-dot">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <span class="progress-text">${claim.approvals.length}/${claim.reviewers.length}</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
+        const tdId = document.createElement("td");
+        tdId.textContent = c.id;
 
-        function getStatusIcon(status) {
-            const icons = {
-                pending: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
-                approved: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
-                rejected: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
-                under_review: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>'
-            };
-            return icons[status] || icons.pending;
-        }
+        const tdClaim = document.createElement("td");
+        tdClaim.textContent = c.claimText;
 
-        function viewClaim(id) {
-            selectedClaim = claims.find(c => c.id === id);
-            renderClaims();
-        }
+        const tdOff = document.createElement("td");
+        tdOff.textContent = c.offering;
 
-        function renderClaimDetail() {
-            const container = document.getElementById('claimDetail');
-            const canReview = selectedClaim.currentReviewer === currentUser && 
-                            selectedClaim.status !== 'approved' && 
-                            selectedClaim.status !== 'rejected';
-            
-            container.innerHTML = `
-                <div class="detail-view">
-                    <div class="detail-header">
-                        <button class="back-btn" onclick="closeDetail()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="15 18 9 12 15 6"></polyline>
-                            </svg>
-                            Back to list
-                        </button>
-                        <div class="detail-title-row">
-                            <div class="detail-title">
-                                <h2>${selectedClaim.title}</h2>
-                                <p>Claim ID: ${selectedClaim.id}</p>
-                            </div>
-                            <div class="status-badge status-${selectedClaim.status}">
-                                ${getStatusIcon(selectedClaim.status)}
-                                <span>${selectedClaim.status.replace('_', ' ')}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="detail-body">
-                        <div class="detail-section">
-                            <h3>Description</h3>
-                            <div class="description-box">${selectedClaim.description}</div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="metadata-grid">
-                                <div class="metadata-card">
-                                    <h3>Metadata</h3>
-                                    <div class="metadata-row">
-                                        <span>Type:</span>
-                                        <span>${selectedClaim.type}</span>
-                                    </div>
-                                    <div class="metadata-row">
-                                        <span>Theme:</span>
-                                        <span>${selectedClaim.theme}</span>
-                                    </div>
-                                    <div class="metadata-row">
-                                        <span>Offering:</span>
-                                        <span>${selectedClaim.offering}</span>
-                                    </div>
-                                </div>
-                                <div class="metadata-card">
-                                    <h3>Submission Details</h3>
-                                    <div class="metadata-row">
-                                        <span>Submitted By:</span>
-                                        <span>${selectedClaim.submittedBy}</span>
-                                    </div>
-                                    <div class="metadata-row">
-                                        <span>Date:</span>
-                                        <span>${selectedClaim.submissionDate}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        ${canReview ? `
-                            <div class="detail-section">
-                                <div class="action-buttons">
-                                    <button class="approve-btn" onclick="approveClaim('${selectedClaim.id}')">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        Approve Claim
-                                    </button>
-                                    <button class="reject-btn" onclick="rejectClaim()">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                        Reject Claim
-                                    </button>
-                                </div>
-                            </div>
-                        ` : ''}
-                    </div>
-                </div>
-            `;
-        }
+        const tdTheme = document.createElement("td");
+        tdTheme.textContent = c.theme;
 
-        function closeDetail() {
-            selectedClaim = null;
-            renderClaims();
-        }
+        const tdStatus = document.createElement("td");
+        const statusPill = document.createElement("span");
+        statusPill.className = "status-pill";
+        if (c.status === "Approved")
+          statusPill.classList.add("status-approved");
+        else if (c.status === "Rejected")
+          statusPill.classList.add("status-rejected");
+        else if (c.status === "Pending")
+          statusPill.classList.add("status-pending");
+        else statusPill.classList.add("status-inreview");
 
-        function approveClaim(id) {
-            const claim = claims.find(c => c.id === id);
-            if (claim) {
-                claim.approvals.push(currentUser);
-                const remaining = claim.reviewers.filter(r => !claim.approvals.includes(r));
-                claim.currentReviewer = remaining.length > 0 ? remaining[0] : null;
-                claim.status = remaining.length === 0 ? 'approved' : 'under_review';
-                selectedClaim = null;
-                renderClaims();
-            }
-        }
+        statusPill.textContent = c.status;
+        tdStatus.appendChild(statusPill);
 
-        function rejectClaim() {
-            document.getElementById('rejectionModal').classList.add('active');
-        }
+        const tdContext = document.createElement("td");
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = c.contextTag;
+        tdContext.appendChild(tag);
 
-        function closeModal() {
-            document.getElementById('rejectionModal').classList.remove('active');
-            document.getElementById('rejectionComment').value = '';
-        }
+        tr.appendChild(tdId);
+        tr.appendChild(tdClaim);
+        tr.appendChild(tdOff);
+        tr.appendChild(tdTheme);
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdContext);
 
-        function submitRejection() {
-            const comment = document.getElementById('rejectionComment').value;
-            if (selectedClaim && comment) {
-                selectedClaim.rejections.push(currentUser);
-                selectedClaim.status = 'rejected';
-                selectedClaim.comments.push({
-                    reviewer: currentUser,
-                    text: comment,
-                    date: new Date().toISOString().split('T')[0]
-                });
-                closeModal();
-                selectedClaim = null;
-                renderClaims();
-            }
-        }
+        tbody.appendChild(tr);
+      });
+    }
 
-        // Initialize app
-        initRoleButtons();
-    </script>
+    // Filters listeners
+    ["filterSearch", "filterStatus", "filterTheme", "filterOffering"].forEach(
+      (id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("input", renderRepository);
+        el.addEventListener("change", renderRepository);
+      }
+    );
+
+    // Initial render
+    refreshOfferingFilter();
+    renderApproverView();
+    renderRepository();
+  </script>
 </body>
 </html>
