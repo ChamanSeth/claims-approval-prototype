@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accuray Claims Approval System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; }
+
+        /* Login Page */
+        .login-container { min-height: 100vh; background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 50%, #f1f5f9 100%); display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-box { background: white; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); padding: 50px; max-width: 450px; width: 100%; border: 1px solid #e2e8f0; }
+        .logo-box { background: linear-gradient(135deg, #2563eb, #1e40af); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; box-shadow: 0 10px 30px rgba(37,99,235,0.3); }
+        .logo-icon { width: 40px; height: 40px; stroke: white; fill: none; }
+        .login-title { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #1e40af, #1e3a8a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 15px; }
+        .login-subtitle { color: #64748b; font-size: 18px; text-align: center; margin-bottom: 20px; }
+        .login-divider { border-top: 1px solid #e2e8f0; margin: 20px 0; }
+        .login-instruction { color: #94a3b8; font-size: 14px; text-align: center; }
+        .role-btn { width: 100%; background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 18px; margin: 12px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .role-btn:hover { border-color: #3b82f6; background: #eff6ff; box-shadow: 0 4px 12px rgba(59,130,246,0.2); }
+        .role-btn span { color: #334155; font-weight: 600; font-size: 16px; }
+        .role-btn:hover span { color: #1e40af; }
+        .role-btn svg { stroke: #94a3b8; transition: all 0.3s; stroke-width: 2; width: 20px; height: 20px; }
+        .role-btn:hover svg { stroke: #3b82f6; }
+        .login-footer { text-align: center; margin-top: 30px; padding-top: 25px; border-top: 1px solid #e2e8f0; color: #94a3b8; font-size: 12px; }
+
+        /* Main Dashboard */
+        .dashboard { display: none; min-height: 100vh; }
+        .dashboard.active { display: flex; }
+
+        /* Sidebar */
+        .sidebar { width: 288px; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); color: white; display: flex; flex-direction: column; box-shadow: 4px 0 30px rgba(0,0,0,0.3); }
+        .sidebar-header { padding: 24px; border-bottom: 1px solid #334155; }
+        .sidebar-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .sidebar-logo { background: linear-gradient(135deg, #3b82f6, #1e40af); padding: 12px; border-radius: 16px; box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
+        .sidebar-logo svg { width: 28px; height: 28px; stroke: white; }
+        .sidebar-brand-text h2 { font-size: 20px; font-weight: 700; }
+        .sidebar-brand-text p { font-size: 13px; color: #94a3b8; }
+        .user-info { background: rgba(51,65,85,0.5); padding: 12px; border-radius: 12px; }
+        .user-info p:first-child { font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+        .user-info p:last-child { font-weight: 600; }
+        .sidebar-nav { flex: 1; padding: 16px; }
+        .nav-btn { width: 100%; padding: 14px 16px; border: none; background: transparent; color: white; border-radius: 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; margin: 8px 0; transition: all 0.3s; font-size: 15px; font-weight: 500; position: relative; }
+        .nav-btn:hover { background: #334155; }
+        .nav-btn.active { background: #3b82f6; box-shadow: 0 8px 24px rgba(59,130,246,0.5); }
+        .nav-btn svg { width: 20px; height: 20px; }
+        .badge { position: absolute; right: 12px; background: #ef4444; color: white; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 700; box-shadow: 0 2px 8px rgba(239,68,68,0.4); }
+        .sidebar-footer { padding: 16px; border-top: 1px solid #334155; }
+        .logout-btn { width: 100%; padding: 14px; border: none; background: transparent; color: white; border-radius: 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.3s; font-size: 15px; font-weight: 500; }
+        .logout-btn:hover { background: #334155; }
+        .sidebar-footer-text { text-align: center; margin-top: 16px; font-size: 11px; color: #64748b; }
+
+        /* Main Content */
+        .main-content { flex: 1; display: flex; flex-direction: column; background: #f8fafc; }
+        .header { background: white; border-bottom: 1px solid #e2e8f0; padding: 24px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .header-title h1 { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #1e293b, #475569); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+        .header-title p { color: #64748b; font-size: 18px; }
+        .header-actions { display: flex; gap: 16px; align-items: center; }
+        .bell-btn { position: relative; padding: 12px; background: transparent; border: none; border-radius: 16px; cursor: pointer; transition: all 0.3s; }
+        .bell-btn:hover { background: #f1f5f9; }
+        .bell-btn svg { width: 24px; height: 24px; stroke: #64748b; }
+        .notification-dot { position: absolute; top: 8px; right: 8px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid white; }
+
+        /* Search Bar */
+        .search-bar { background: white; border-bottom: 1px solid #e2e8f0; padding: 24px 32px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .search-controls { display: flex; gap: 16px; }
+        .search-input-wrapper { flex: 1; position: relative; }
+        .search-input-wrapper svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; stroke: #94a3b8; }
+        .search-input { width: 100%; padding: 14px 16px 14px 48px; border: 2px solid #e2e8f0; border-radius: 16px; font-size: 15px; transition: all 0.3s; }
+        .search-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .filter-select { padding: 14px 20px; border: 2px solid #e2e8f0; border-radius: 16px; font-size: 15px; font-weight: 500; color: #334155; cursor: pointer; transition: all 0.3s; background: white; }
+        .filter-select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+
+        /* Content Area */
+        .content-area { flex: 1; overflow-y: auto; padding: 32px; }
+        .claims-grid { display: grid; gap: 24px; }
+
+        /* Claim Card */
+        .claim-card { background: white; border-radius: 24px; padding: 28px; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+        .claim-card:hover { border-color: #3b82f6; box-shadow: 0 8px 32px rgba(59,130,246,0.15); transform: translateY(-2px); }
+        .claim-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .claim-info { flex: 1; }
+        .claim-info h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 12px; }
+        .claim-info p { color: #64748b; line-height: 1.6; }
+        .status-badge { padding: 10px 16px; border-radius: 16px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .status-pending { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .status-approved { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .status-rejected { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .status-under_review { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .claim-footer { display: flex; justify-content: space-between; align-items: center; }
+        .claim-meta { display: flex; gap: 24px; color: #64748b; font-size: 14px; font-weight: 500; }
+        .meta-item { display: flex; align-items: center; gap: 8px; }
+        .meta-item svg { width: 16px; height: 16px; }
+        .offering-tag { background: #dbeafe; color: #1e40af; padding: 6px 14px; border-radius: 12px; font-weight: 600; border: 1px solid #bfdbfe; }
+        .progress { display: flex; align-items: center; gap: 12px; }
+        .approval-dots { display: flex; gap: -8px; }
+        .approval-dot { width: 32px; height: 32px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 8px rgba(16,185,129,0.3); margin-left: -8px; }
+        .approval-dot:first-child { margin-left: 0; }
+        .approval-dot svg { width: 16px; height: 16px; stroke: white; }
+        .progress-text { font-weight: 700; color: #334155; }
+
+        /* Empty State */
+        .empty-state { text-align: center; padding: 80px 40px; background: white; border-radius: 24px; border: 2px solid #e2e8f0; }
+        .empty-state svg { width: 80px; height: 80px; stroke: #cbd5e1; margin: 0 auto 24px; }
+        .empty-state h3 { font-size: 24px; font-weight: 700; color: #334155; margin-bottom: 12px; }
+        .empty-state p { color: #64748b; font-size: 18px; }
+
+        /* Detail View */
+        .detail-view { max-width: 1200px; margin: 0 auto; background: white; border-radius: 24px; border: 2px solid #e2e8f0; box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+        .detail-header { padding: 40px; border-bottom: 1px solid #e2e8f0; background: linear-gradient(135deg, #f8fafc 0%, white 100%); border-radius: 24px 24px 0 0; }
+        .back-btn { background: transparent; border: none; color: #3b82f6; font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 24px; padding: 8px; border-radius: 8px; transition: all 0.3s; }
+        .back-btn:hover { background: #eff6ff; }
+        .back-btn svg { width: 20px; height: 20px; }
+        .detail-title-row { display: flex; justify-content: space-between; align-items: flex-start; }
+        .detail-title h2 { font-size: 32px; font-weight: 700; color: #1e293b; margin-bottom: 12px; }
+        .detail-title p { color: #64748b; font-weight: 500; }
+        .detail-body { padding: 40px; }
+        .detail-section { margin-bottom: 40px; }
+        .detail-section h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 16px; }
+        .description-box { background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; color: #334155; font-size: 18px; line-height: 1.7; }
+        .metadata-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .metadata-card { background: #f8fafc; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; }
+        .metadata-card h3 { font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 16px; }
+        .metadata-row { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; font-size: 14px; }
+        .metadata-row span:first-child { color: #64748b; }
+        .metadata-row span:last-child { font-weight: 600; color: #1e293b; background: white; padding: 6px 12px; border-radius: 8px; }
+        .action-buttons { display: flex; gap: 16px; padding-top: 24px; border-top: 1px solid #e2e8f0; }
+        .approve-btn, .reject-btn { flex: 1; padding: 18px; border: none; border-radius: 16px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .approve-btn { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .approve-btn:hover { background: linear-gradient(135deg, #059669, #047857); box-shadow: 0 8px 24px rgba(16,185,129,0.3); }
+        .reject-btn { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .reject-btn:hover { background: linear-gradient(135deg, #dc2626, #b91c1c); box-shadow: 0 8px 24px rgba(239,68,68,0.3); }
+        .approve-btn svg, .reject-btn svg { width: 24px; height: 24px; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 24px; padding: 40px; max-width: 600px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); border: 1px solid #e2e8f0; }
+        .modal h2 { font-size: 28px; font-weight: 700; color: #1e293b; margin-bottom: 16px; }
+        .modal p { color: #64748b; margin-bottom: 24px; font-size: 16px; }
+        .modal textarea { width: 100%; padding: 16px; border: 2px solid #e2e8f0; border-radius: 16px; font-size: 15px; font-family: inherit; resize: vertical; min-height: 150px; transition: all 0.3s; }
+        .modal textarea:focus { outline: none; border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.1); }
+        .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
+        .modal-btn { flex: 1; padding: 16px; border: none; border-radius: 16px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s; }
+        .modal-submit { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; box-shadow: 0 4px 16px rgba(239,68,68,0.2); }
+        .modal-submit:hover { background: linear-gradient(135deg, #dc2626, #b91c1c); box-shadow: 0 6px 20px rgba(239,68,68,0.3); }
+        .modal-cancel { background: #e2e8f0; color: #1e293b; }
+        .modal-cancel:hover { background: #cbd5e1; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="logo-box">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+            </div>
+            <h1 class="login-title">Accuray Claims Portal</h1>
+            <p class="login-subtitle">Product Claims Matrix Approval</p>
+            <div class="login-divider"></div>
+            <p class="login-instruction">Select your department to continue</p>
+
+            <div id="roleButtons"></div>
+
+            <div class="login-footer">© 2025 Accuray Incorporated - Confidential</div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                    <div class="sidebar-brand-text">
+                        <h2>Accuray</h2>
+                        <p>Claims Portal</p>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <p>Logged in as</p>
+                    <p id="userRole"></p>
+                </div>
+            </div>
+
+            <div class="sidebar-nav">
+                <button class="nav-btn active" onclick="showPage('dashboard')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span>Pending Approvals</span>
+                    <span id="pendingBadge" class="badge hidden"></span>
+                </button>
+                <button class="nav-btn" onclick="showPage('repository')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                    </svg>
+                    <span>Claims Repository</span>
+                </button>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="logout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Logout</span>
+                </button>
+                <div class="sidebar-footer-text">Accuray Confidential</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="header-content">
+                    <div class="header-title">
+                        <h1 id="pageTitle">Pending Approvals</h1>
+                        <p id="pageSubtitle"></p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="bell-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                            <span class="notification-dot"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <div class="search-controls">
+                    <div class="search-input-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search claims by title or description..." oninput="filterClaims()">
+                    </div>
+                    <select id="statusFilter" class="filter-select" onchange="filterClaims()">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="under_review">Under Review</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div id="claimsList" class="claims-grid"></div>
+                <div id="claimDetail" class="hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rejection Modal -->
+    <div id="rejectionModal" class="modal-overlay">
+        <div class="modal">
+            <h2>Rejection Reason</h2>
+            <p>Please provide a detailed reason for rejecting this claim:</p>
+            <textarea id="rejectionComment" placeholder="Enter your comments and feedback..."></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn modal-submit" onclick="submitRejection()">Submit Rejection</button>
+                <button class="modal-btn modal-cancel" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample claims data
+        let claims = [
+            {id:'CLM-001',title:'Synchrony Image Guidance Technology',description:'Synchrony is the only technology that uses image guidance to automatically adapt and synchronize the radiation beam to the position of the tumor in real-time.',submittedBy:'Sarah Johnson',submissionDate:'2025-10-15',type:'Competitive',theme:'Product',offering:'Synchrony',status:'pending',reviewers:['Product','Clinical','Regulatory','Legal'],currentReviewer:'Product',approvals:[],rejections:[],comments:[]},
+            {id:'CLM-002',title:'ClearRT Precision Treatment',description:'Deliver more personalized and more precise treatment plans for more patients.',submittedBy:'Michael Chen',submissionDate:'2025-10-18',type:'Clinical',theme:'Software',offering:'Precision',status:'pending',reviewers:['Product','Clinical','Engineering'],currentReviewer:'Clinical',approvals:['Product'],rejections:[],comments:[]},
+            {id:'CLM-003',title:'ClearRT MR Imaging Integration',description:'ClearRT avoids the distortion caused by MR imaging and the artifacts associated with conventional cone beam CT by using hardware-based image reconstruction.',submittedBy:'Emily Rodriguez',submissionDate:'2025-10-20',type:'Competitive',theme:'Software',offering:'ClearRT',status:'approved',reviewers:['Product','Clinical','Regulatory','Engineering'],currentReviewer:null,approvals:['Product','Clinical','Regulatory','Engineering'],rejections:[],comments:[]},
+            {id:'CLM-004',title:'ClearRT Treatment Time Efficiency',description:'It takes an image reconstruction in minutes and the industry-leading image quality means clinicians can more confidently proceed with treatment.',submittedBy:'David Park',submissionDate:'2025-10-22',type:'Technological',theme:'Software',offering:'ClearRT',status:'rejected',reviewers:['Product','Clinical','Regulatory'],currentReviewer:null,approvals:['Product'],rejections:['Clinical'],comments:[{reviewer:'Clinical',text:'Need specific time metrics and clinical validation data',date:'2025-10-25'}]},
+            {id:'CLM-005',title:'ClearRT Anatomical Accuracy',description:'The industry leading image quality and anatomical accuracy produced by ClearRT allows clinicians to quickly and confidently proceed with treatment.',submittedBy:'Lisa Wang',submissionDate:'2025-10-24',type:'Competitive',theme:'Software',offering:'ClearRT',status:'under_review',reviewers:['Product','Clinical','Regulatory','Engineering'],currentReviewer:'Regulatory',approvals:['Product','Clinical'],rejections:[],comments:[]}
+        ];
+
+        const roles = ['Product', 'Clinical', 'Regulatory', 'Engineering', 'Legal'];
+        let currentUser = '';
+        let currentPage = 'dashboard';
+        let selectedClaim = null;
+
+        // Initialize role buttons
+        function initRoleButtons() {
+            const container = document.getElementById('roleButtons');
+            roles.forEach(role => {
+                const btn = document.createElement('button');
+                btn.className = 'role-btn';
+                btn.innerHTML = `
+                    <span>${role} Team</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                `;
+                btn.onclick = () => login(role);
+                container.appendChild(btn);
+            });
+        }
+
+        function login(role) {
+            currentUser = role;
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            document.getElementById('userRole').textContent = role + ' Team';
+            renderClaims();
+        }
+
+        function logout() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').classList.remove('active');
+            currentUser = '';
+            selectedClaim = null;
+        }
+
+        function showPage(page) {
+            currentPage = page;
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.nav-btn').classList.add('active');
+
+            if (page === 'dashboard') {
+                document.getElementById('pageTitle').textContent = 'Pending Approvals';
+                document.getElementById('pageSubtitle').textContent = `Claims awaiting your review as ${currentUser} team member`;
+            } else {
+                document.getElementById('pageTitle').textContent = 'Claims Repository';
+                document.getElementById('pageSubtitle').textContent = 'All approved and archived claims';
+            }
+
+            selectedClaim = null;
+            renderClaims();
+        }
+
+        function getFilteredClaims() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+
+            return claims.filter(claim => {
+                const matchesSearch = claim.title.toLowerCase().includes(search) || 
+                                    claim.description.toLowerCase().includes(search);
+                const matchesStatus = status === 'all' || claim.status === status;
+                const isPending = currentPage === 'dashboard' ? 
+                    (claim.currentReviewer === currentUser && claim.status !== 'approved' && claim.status !== 'rejected') : true;
+
+                return matchesSearch && matchesStatus && (currentPage === 'repository' || isPending);
+            });
+        }
+
+        function filterClaims() {
+            renderClaims();
+        }
+
+        function renderClaims() {
+            const filtered = getFilteredClaims();
+            const listContainer = document.getElementById('claimsList');
+            const detailContainer = document.getElementById('claimDetail');
+
+            // Update badge
+            const badge = document.getElementById('pendingBadge');
+            const pendingCount = claims.filter(c => c.currentReviewer === currentUser && c.status !== 'approved' && c.status !== 'rejected').length;
+            if (pendingCount > 0 && currentPage === 'dashboard') {
+                badge.textContent = pendingCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            if (selectedClaim) {
+                listContainer.classList.add('hidden');
+                detailContainer.classList.remove('hidden');
+                renderClaimDetail();
+                return;
+            }
+
+            listContainer.classList.remove('hidden');
+            detailContainer.classList.add('hidden');
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <h3>No claims found</h3>
+                        <p>${currentPage === 'dashboard' ? 'You have no pending claims to review at this time.' : 'No claims match your search criteria.'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listContainer.innerHTML = filtered.map(claim => `
+                <div class="claim-card" onclick="viewClaim('${claim.id}')">
+                    <div class="claim-header">
+                        <div class="claim-info">
+                            <h3>${claim.title}</h3>
+                            <p>${claim.description}</p>
+                        </div>
+                        <div class="status-badge status-${claim.status}">
+                            ${getStatusIcon(claim.status)}
+                            <span>${claim.status.replace('_', ' ')}</span>
+                        </div>
+                    </div>
+                    <div class="claim-footer">
+                        <div class="claim-meta">
+                            <div class="meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                <span>${claim.submittedBy}</span>
+                            </div>
+                            <div class="meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>${claim.submissionDate}</span>
+                            </div>
+                            <span class="offering-tag">${claim.offering}</span>
+                        </div>
+                        <div class="progress">
+                            <div class="approval-dots">
+                                ${claim.approvals.map(() => `
+                                    <div class="approval-dot">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <span class="progress-text">${claim.approvals.length}/${claim.reviewers.length}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusIcon(status) {
+            const icons = {
+                pending: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
+                approved: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
+                rejected: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
+                under_review: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>'
+            };
+            return icons[status] || icons.pending;
+        }
+
+        function viewClaim(id) {
+            selectedClaim = claims.find(c => c.id === id);
+            renderClaims();
+        }
+
+        function renderClaimDetail() {
+            const container = document.getElementById('claimDetail');
+            const canReview = selectedClaim.currentReviewer === currentUser && 
+                            selectedClaim.status !== 'approved' && 
+                            selectedClaim.status !== 'rejected';
+
+            container.innerHTML = `
+                <div class="detail-view">
+                    <div class="detail-header">
+                        <button class="back-btn" onclick="closeDetail()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                            Back to list
+                        </button>
+                        <div class="detail-title-row">
+                            <div class="detail-title">
+                                <h2>${selectedClaim.title}</h2>
+                                <p>Claim ID: ${selectedClaim.id}</p>
+                            </div>
+                            <div class="status-badge status-${selectedClaim.status}">
+                                ${getStatusIcon(selectedClaim.status)}
+                                <span>${selectedClaim.status.replace('_', ' ')}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-section">
+                            <h3>Description</h3>
+                            <div class="description-box">${selectedClaim.description}</div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <div class="metadata-grid">
+                                <div class="metadata-card">
+                                    <h3>Metadata</h3>
+                                    <div class="metadata-row">
+                                        <span>Type:</span>
+                                        <span>${selectedClaim.type}</span>
+                                    </div>
+                                    <div class="metadata-row">
+                                        <span>Theme:</span>
+                                        <span>${selectedClaim.theme}</span>
+                                    </div>
+                                    <div class="metadata-row">
+                                        <span>Offering:</span>
+                                        <span>${selectedClaim.offering}</span>
+                                    </div>
+                                </div>
+                                <div class="metadata-card">
+                                    <h3>Submission Details</h3>
+                                    <div class="metadata-row">
+                                        <span>Submitted By:</span>
+                                        <span>${selectedClaim.submittedBy}</span>
+                                    </div>
+                                    <div class="metadata-row">
+                                        <span>Date:</span>
+                                        <span>${selectedClaim.submissionDate}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${canReview ? `
+                            <div class="detail-section">
+                                <div class="action-buttons">
+                                    <button class="approve-btn" onclick="approveClaim('${selectedClaim.id}')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        Approve Claim
+                                    </button>
+                                    <button class="reject-btn" onclick="rejectClaim()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                        Reject Claim
+                                    </button>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function closeDetail() {
+            selectedClaim = null;
+            renderClaims();
+        }
+
+        function approveClaim(id) {
+            const claim = claims.find(c => c.id === id);
+            if (claim) {
+                claim.approvals.push(currentUser);
+                const remaining = claim.reviewers.filter(r => !claim.approvals.includes(r));
+                claim.currentReviewer = remaining.length > 0 ? remaining[0] : null;
+                claim.status = remaining.length === 0 ? 'approved' : 'under_review';
+                selectedClaim = null;
+                renderClaims();
+            }
+        }
+
+        function rejectClaim() {
+            document.getElementById('rejectionModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('rejectionModal').classList.remove('active');
+            document.getElementById('rejectionComment').value = '';
+        }
+
+        function submitRejection() {
+            const comment = document.getElementById('rejectionComment').value;
+            if (selectedClaim && comment) {
+                selectedClaim.rejections.push(currentUser);
+                selectedClaim.status = 'rejected';
+                selectedClaim.comments.push({
+                    reviewer: currentUser,
+                    text: comment,
+                    date: new Date().toISOString().split('T')[0]
+                });
+                closeModal();
+                selectedClaim = null;
+                renderClaims();
+            }
+        }
+
+        // Initialize app
+        initRoleButtons();
+    </script>
+</body>
+</html>
